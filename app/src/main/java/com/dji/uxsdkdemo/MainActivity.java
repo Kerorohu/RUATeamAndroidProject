@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private Compass compass;
     private static final String TAG = MainActivity.class.getName();
 
+
+    Boolean temp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,20 +73,43 @@ public class MainActivity extends AppCompatActivity {
                                 FlightController flightController =
                                         ((Aircraft) MApplication.getProductInstance()).getFlightController();
                                 // 2. 设置启动虚拟摇杆模式
-                                flightController.setVirtualStickModeEnabled(true, new CommonCallbacks.CompletionCallback() {
-                                    @Override
-                                    public void onResult(DJIError djiError) {
-                                        if(null != djiError)
-                                            showToast(djiError.getDescription());
+                                temp = false;
+                                while (temp != true) {
+                                    flightController.setVirtualStickModeEnabled(true, new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            if (null != djiError)
+                                                showToast(djiError.getDescription());
+                                        }
+                                    });
+
+                                    flightController.getVirtualStickModeEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+                                        @Override
+                                        public void onSuccess(Boolean aBoolean) {
+                                            temp = aBoolean;
+                                            if (aBoolean == true)
+                                                showToast("VirtualStickMode is" + aBoolean);
+                                        }
+
+                                        @Override
+                                        public void onFailure(DJIError djiError) {
+                                            if (null != djiError)
+                                                showToast(djiError.getDescription());
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(50);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
                                     }
-                                });
+                                }
 
 
                                 // 3. 起飞
                                 flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
                                     @Override
                                     public void onResult(DJIError djiError) {
-                                        if(null != djiError)
+                                        if (null != djiError)
                                             showToast(djiError.getDescription());
                                     }
                                 });
@@ -123,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                                     setControlData(0,0,0,0, task);
                                     Thread.sleep(1000);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    showToast(e.getMessage());
                                 } finally {
                                     // 8. 删除 Timer 线程
                                     timer.cancel();
