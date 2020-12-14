@@ -103,7 +103,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             public void run() {
                 Looper.prepare();
                 //在此处处理出现异常的情况
-                Toast.makeText(mContext, "程序开小差了呢..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "程序开小差了", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
         }.start();

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">UXSDKDemo</string>
     <string name="action_settings">Settings</string>
+    <string name="zb">坐标点%1$d</string>
+    <string name="zb_j">坐标点%1$d精度</string>
+    <string name="zb_w">坐标点%1$d纬度</string>
+
 </resources>

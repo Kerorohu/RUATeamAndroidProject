@@ -1,41 +1,41 @@
 package com.dji.uxsdkdemo;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.util.Timer;
-
-import dji.common.error.DJIError;
-import dji.common.flightcontroller.FlightControllerState;
+import dji.common.flightcontroller.ObstacleDetectionSector;
+import dji.common.flightcontroller.VisionDetectionState;
+import dji.common.flightcontroller.VisionSensorPosition;
 import dji.common.flightcontroller.virtualstick.FlightCoordinateSystem;
 import dji.common.flightcontroller.virtualstick.RollPitchControlMode;
 import dji.common.flightcontroller.virtualstick.VerticalControlMode;
 import dji.common.flightcontroller.virtualstick.YawControlMode;
-import dji.common.useraccount.UserAccountState;
-import dji.common.util.CommonCallbacks;
+import dji.sdk.base.BaseProduct;
 import dji.sdk.flightcontroller.Compass;
+import dji.sdk.flightcontroller.FlightAssistant;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.products.Aircraft;
-import dji.sdk.useraccount.UserAccountManager;
+import dji.sdk.sdkmanager.DJISDKManager;
+import dji.sdk.sdkmanager.LiveStreamManager;
+import dji.sdksharedlib.DJISDKCache;
 
 public class MainActivity extends AppCompatActivity {
 
     private Compass compass;
     private static final String TAG = MainActivity.class.getName();
-
-
+    private LiveStreamManager.OnLiveChangeListener listener;
+    private String liveShowUrl;
     Boolean temp;
 
     @Override
@@ -61,13 +61,32 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        Button btn = (Button)findViewById(R.id.start);
+        Button btn = (Button) findViewById(R.id.start);
+
+        listener = new LiveStreamManager.OnLiveChangeListener() {
+            @Override
+            public void onStatusChanged(int i) {
+                showToast("status changed : " + i);
+            }
+        };
+
+
+        liveShowUrl = "rtmp://192.168.1.117:1935/live/home";
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
+                /*FlyingTask flyingTask = new FlyingTask(MainActivity.this);
+                FlyingTask.FlyTask flyTask = flyingTask.new FlyTask();
+                flyTask.start();*/
+
+                Intent intent = new Intent("android.intent.action.Input");
+                startActivity(intent);
+
+                /*new Thread(new Runnable() {
                     @Override
                     public void run() {
+
+                        //飞行代码
                         if(MApplication.isAircraftConnected()){
                             if (ModuleVerificationUtil.isFlightControllerAvailable()) {
                                 FlightController flightController =
@@ -170,13 +189,49 @@ public class MainActivity extends AppCompatActivity {
                                 showToast("FlightControllerCurrent Error");
                             }
                         }else {
-                            showToast("AircraftconnectedCurrent Error");
+                            showToast("AircraftConnectedCurrent Error");
                         }
                     }
-                }).start();
+                }).start();*/
             }
         });
 
+        while (!MApplication.isAircraftConnected() || !isLiveStreamManagerOn()) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (MApplication.isAircraftConnected()) {
+                        if (isLiveStreamManagerOn()) {
+                            if (DJISDKManager.getInstance().getLiveStreamManager().isStreaming()) {
+                                showToast("already started!");
+                            } else {
+                                DJISDKManager.getInstance().getLiveStreamManager().setLiveUrl(liveShowUrl);
+                                int result = DJISDKManager.getInstance().getLiveStreamManager().startStream();
+                                DJISDKManager.getInstance().getLiveStreamManager().setStartTime();
+                                if (isLiveStreamManagerOn()) {
+                                    DJISDKManager.getInstance().getLiveStreamManager().registerListener(listener);
+                                }
+                                ToastUtils.setResultToToast("startLive:" + result +
+                                        "\n isVideoStreamSpeedConfigurable:" + DJISDKManager.getInstance().getLiveStreamManager().isVideoStreamSpeedConfigurable() +
+                                        "\n isLiveAudioEnabled:" + DJISDKManager.getInstance().getLiveStreamManager().isLiveAudioEnabled());
+                            }
+                        } else {
+                            //showToast("onStreamError!");
+                        }
+                    } else {
+                        //showToast("AircraftconnectedCurrent Error");
+                    }
+                }
+            }).start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        //传感器数据获取
         /*new Thread(new Runnable() {
             @Override
             public void run() {
@@ -221,6 +276,46 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();*/
 
+       /* //避障数据获取
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    if(MApplication.isAircraftConnected()){
+                        if (ModuleVerificationUtil.isFlightControllerAvailable()) {
+                            FlightController flightController =
+                                    ((Aircraft) MApplication.getProductInstance()).getFlightController();
+
+                            FlightAssistant intelligentFlightAssistant = flightController.getFlightAssistant();
+                            if (intelligentFlightAssistant != null) {
+                                intelligentFlightAssistant.setVisionDetectionStateUpdatedCallback(new VisionDetectionState.Callback() {
+                                    @Override
+                                    public void onUpdate(VisionDetectionState visionDetectionState) {
+                                        //VisionSensorPosition a = visionDetectionState.getPosition();
+                                        ObstacleDetectionSector[] visionDetectionSectorArray =
+                                                visionDetectionState.getDetectionSectors();
+                                        showToast(String.valueOf(visionDetectionSectorArray[0].getObstacleDistanceInMeters()));
+
+                                    }
+                                });
+                                }else {
+                                showToast("onAttachedToWindow FC NOT Available");
+                            }
+                        }else{
+                            showToast("FlightControllerCurrent Error");
+                        }
+                    }else {
+                        showToast("AircraftconnectedCurrent Error");
+                    }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();*/
+
     }
 
     private void showToast(final String toastMsg) {
@@ -232,26 +327,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
-    private void setFilghtMode(FlightController flightController) {
-        // 坐标系设置为机体坐标系
-        flightController.setRollPitchCoordinateSystem(FlightCoordinateSystem.BODY);
-        // 垂直方向控制模式为位置
-        flightController.setVerticalControlMode(VerticalControlMode.VELOCITY);
-        // 水平方向控制模式为速度
-        flightController.setRollPitchControlMode(RollPitchControlMode.VELOCITY);
-        // 偏航角控制模式设置为角度
-        flightController.setYawControlMode(YawControlMode.ANGULAR_VELOCITY);
-    }
-
-    private void setControlData(float pitch, float roll, float yaw, float throttle, SendControlDataTask task) {
-        task.set_pitch(pitch);
-        task.set_roll(roll);
-        task.set_yaw(yaw);
-        task.set_throttle(throttle);
-
+    private boolean isLiveStreamManagerOn() {
+        if (DJISDKManager.getInstance().getLiveStreamManager() == null) {
+            ToastUtils.setResultToToast("No live stream manager!");
+            return false;
+        }
+        return true;
     }
 
 }

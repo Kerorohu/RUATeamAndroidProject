@@ -13,6 +13,7 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 public class MApplication extends Application {
 
+    private static Application app = null;
     private DemoApplication demoApplication;
     private static BaseProduct product;
     private static BluetoothProductConnector bluetoothConnector = null;
@@ -42,6 +43,10 @@ public class MApplication extends Application {
         return (Aircraft) getProductInstance();
     }
 
+    public static Application getInstance() {
+        return MApplication.app;
+    }
+
     @Override
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
@@ -50,6 +55,7 @@ public class MApplication extends Application {
             demoApplication = new DemoApplication();
             demoApplication.setContext(this);
         }
+        app = this;
     }
 
     @Override
