@@ -11,26 +11,63 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         multiDexEnabled true
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"
+            }
+        }
         ndk {
             // On x86 devices that run Android API 23 or above, if the application is targeted with API 23 or
             // above, FFmpeg lib might lead to runtime crashes or warnings.
-            abiFilters 'armeabi-v7a', 'x86', 'arm64-v8a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
+
+    // 解决资源重复问题
+    packagingOptions {
+        exclude 'lib/mips/libpl_droidsonroids_gif.so'
+    }
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            jniDebuggable true
         }
         debug {
-            shrinkResources true
+            //shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+//    sourceSets{
+//        main{
+//            jniLibs.srcDirs = ['libs']
+//        }
+//    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a' //select ABIs to build APKs for
+            universalApk true //generate an additional APK that contains all the ABIs
+        }
+    }
+
+    project.ext.versionCodes = ['armeabi': 1, 'armeabi-v7a': 2, 'arm64-v8a': 3, 'mips': 5, 'mips64': 6, 'x86': 8, 'x86_64': 9]
+
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            output.versionCodeOverride =
+//                    project.ext.versionCodes.get(output.getFilter(com.android.build.OutputFile.ABI), 0) * 1000000 + android.defaultConfig.versionCode
+//        }
+//    }
+
 
     dexOptions {
         javaMaxHeapSize "4g"
@@ -67,6 +104,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    ndkVersion '23.0.7344513 rc4'
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+        }
+    }
 }
 
 
@@ -83,6 +126,9 @@ dependencies {
         exclude module: 'library-anti-distortion'
         //exclude module: 'fly-safe-database'
     })
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation project(path: ':cvsdk')
+
     compileOnly 'com.dji:dji-sdk-provided:4.13'
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -93,9 +139,20 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'com.dji:dji-uxsdk:4.13'
 
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+   implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation fileTree(dir: "$buildDir/native-libs", include: 'native-libs.jar')
     testImplementation 'junit:junit:4.12'
 
+}
+
+task nativeLibsToJar(type: Jar, description: 'create a jar archive of the native libs') {
+    destinationDir file("$buildDir/native-libs")
+    baseName 'native-libs'
+    from fileTree(dir: 'libs', include: '**/*.so')
+    into 'lib/'
+}
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn(nativeLibsToJar)
 }
 
 // Please uncomment the following code if you use your own sdk version.

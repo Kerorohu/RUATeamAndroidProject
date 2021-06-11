@@ -5,12 +5,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class InputActivity extends AppCompatActivity {
     private ConstraintLayout layout;
@@ -33,14 +38,15 @@ public class InputActivity extends AppCompatActivity {
         findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commit();
+                addview();
+
             }
         });
 
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addview();
+                commit();
             }
         });
     }
@@ -51,14 +57,23 @@ public class InputActivity extends AppCompatActivity {
         EditText editText1 = new EditText(this);
         EditText editText2 = new EditText(this);
 
-        String.format(id, i);
-        String.format(zb_j, i);
-        String.format(zb_w, i);
+        editText1.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editText2.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        String ids = String.format(id, i);
+        String zb_js = String.format(zb_j, i);
+        String zb_ws = String.format(zb_w, i);
         i++;
 
-        textView.setText(id);
-        editText1.setText(zb_j);
-        editText2.setText(zb_w);
+        textView.setText(ids);
+        editText1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+            }
+        });
+        editText1.setHint(zb_js);
+        editText2.setHint(zb_ws);
 
         tableRow.addView(textView);
         tableRow.addView(editText1);
@@ -68,7 +83,36 @@ public class InputActivity extends AppCompatActivity {
     }
 
     private void commit() {
-        Intent intent = new Intent("android.intent.action.MAIN");
-        startActivity(intent);
+        Intent intent = new Intent();
+        JSONObject root = new JSONObject();
+
+        JSONArray zbarray = new JSONArray();
+        //JSONObject code = new JSONObject();
+
+        TableRow[] childs = new TableRow[tableLayout.getChildCount()];
+        for (int i = 0; i < childs.length; i++) {
+            childs[i] = (TableRow) tableLayout.getChildAt(i);
+            View[] childss = new View[childs[i].getChildCount()];
+            childss[0] = childs[i].getChildAt(1);
+            childss[1] = childs[i].getChildAt(2);
+            JSONObject jzb = new JSONObject();
+            try {
+                jzb.put("longitude", ((EditText) childss[0]).getText().toString());
+                jzb.put("latitude", ((EditText) childss[1]).getText().toString());
+                zbarray.put(jzb);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            root.put("data", zbarray);
+            root.put("code", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        intent.putExtra("data", root.toString());
+        setResult(2, intent);
+        finish();
     }
 }

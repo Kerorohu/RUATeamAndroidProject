@@ -34,14 +34,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InputActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.Input" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <!-- DJI SDK -->
+        <activity android:name=".VideoDataActivity" /> <!-- DJI SDK -->
         <uses-library android:name="com.android.future.usb.accessory" />
         <uses-library
             android:name="org.apache.http.legacy"
@@ -69,6 +63,15 @@
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InputActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.Input" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

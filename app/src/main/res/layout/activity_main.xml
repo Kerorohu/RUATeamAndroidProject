@@ -10,6 +10,7 @@
 
     <!-- Widget to see first person view (FPV) -->
     <dji.ux.widget.FPVWidget
+        android:id="@+id/fpvWidget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -84,6 +85,14 @@
 
         <Button
             android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            tools:ignore="RtlHardcoded"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/c_calibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
