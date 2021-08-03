@@ -30,8 +30,8 @@
     <application
         android:name=".MApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/myIcon"
-        android:roundIcon="@mipmap/myIcon_round"
+        android:icon="@mipmap/my_icon"
+        android:roundIcon="@mipmap/my_icon_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

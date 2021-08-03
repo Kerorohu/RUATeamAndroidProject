@@ -127,7 +127,7 @@
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="ffffff" />
                                       <entry key="foregroundAssetType" value="CLIP_ART" />
-                                      <entry key="outputName" value="myIcon" />
+                                      <entry key="outputName" value="my_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
