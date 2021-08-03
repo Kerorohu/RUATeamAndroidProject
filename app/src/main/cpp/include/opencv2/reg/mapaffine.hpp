@@ -41,7 +41,7 @@
 #include "map.hpp"
 
 namespace cv {
-    namespace reg {
+namespace reg {
 
 //! @addtogroup reg
 //! @{

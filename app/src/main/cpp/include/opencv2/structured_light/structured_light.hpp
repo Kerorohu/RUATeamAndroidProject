@@ -45,7 +45,7 @@
 #include "opencv2/core.hpp"
 
 namespace cv {
-    namespace structured_light {
+namespace structured_light {
 //! @addtogroup structured_light
 //! @{
 

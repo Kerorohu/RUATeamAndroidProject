@@ -44,16 +44,11 @@
 #define OPENCV_HIGHGUI_HPP
 
 #include "opencv2/core.hpp"
-
 #ifdef HAVE_OPENCV_IMGCODECS
-
 #include "opencv2/imgcodecs.hpp"
-
 #endif
 #ifdef HAVE_OPENCV_VIDEOIO
-
 #include "opencv2/videoio.hpp"
-
 #endif
 
 /**
@@ -847,9 +842,7 @@ value could be 0 or 1. (__Optional__)
 } // cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/highgui/highgui_c.h"
-
 #endif
 
 #endif

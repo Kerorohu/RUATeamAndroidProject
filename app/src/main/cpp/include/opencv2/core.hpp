@@ -107,37 +107,36 @@ information about the error happened in the program. The exception is
 usually constructed and thrown implicitly via CV_Error and CV_Error_ macros.
 @see error
  */
-    class CV_EXPORTS Exception : public std::exception {
-    public:
-        /*!
-         Default constructor
-         */
-        Exception();
+class CV_EXPORTS Exception : public std::exception {
+public:
+    /*!
+     Default constructor
+     */
+    Exception();
 
-        /*!
-         Full constructor. Normally the constructor is not called explicitly.
-         Instead, the macros CV_Error(), CV_Error_() and CV_Assert() are used.
-        */
-        Exception(int _code, const String &_err, const String &_func, const String &_file,
-                  int _line);
+    /*!
+     Full constructor. Normally the constructor is not called explicitly.
+     Instead, the macros CV_Error(), CV_Error_() and CV_Assert() are used.
+    */
+    Exception(int _code, const String &_err, const String &_func, const String &_file, int _line);
 
-        virtual ~Exception() throw();
+    virtual ~Exception() throw();
 
-        /*!
-         \return the error description and the context as a text string.
-        */
-        virtual const char *what() const throw() CV_OVERRIDE;
+    /*!
+     \return the error description and the context as a text string.
+    */
+    virtual const char *what() const throw() CV_OVERRIDE;
 
-        void formatMessage();
+    void formatMessage();
 
-        String msg; ///< the formatted error message
+    String msg; ///< the formatted error message
 
-        int code; ///< error code @see CVStatus
-        String err; ///< error description
-        String func; ///< function name. Available only when the compiler supports getting it
-        String file; ///< source file name where the error has occurred
-        int line; ///< line number in the source file where the error has occurred
-    };
+    int code; ///< error code @see CVStatus
+    String err; ///< error description
+    String func; ///< function name. Available only when the compiler supports getting it
+    String file; ///< source file name where the error has occurred
+    int line; ///< line number in the source file where the error has occurred
+};
 
 /*! @brief Signals an error and raises the exception.
 

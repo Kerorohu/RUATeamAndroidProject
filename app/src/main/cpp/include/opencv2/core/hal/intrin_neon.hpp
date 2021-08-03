@@ -1318,7 +1318,6 @@ inline v_##_Tpvec v_extract(const v_##_Tpvec& a, const v_##_Tpvec& b) \
         int32x4_t v_addition = vorrq_s32(v_05, vandq_s32(v_sign, vreinterpretq_s32_f32(a.val)));
         return v_int32x4(vcvtq_s32_f32(vaddq_f32(a.val, vreinterpretq_f32_s32(v_addition))));
     }
-
 #endif
 
     inline v_int32x4 v_floor(const v_float32x4 &a) {

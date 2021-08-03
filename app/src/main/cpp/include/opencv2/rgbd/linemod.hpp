@@ -52,7 +52,7 @@
 \****************************************************************************************/
 
 namespace cv {
-    namespace linemod {
+namespace linemod {
 
 //! @addtogroup rgbd
 //! @{

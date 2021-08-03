@@ -390,7 +390,6 @@ namespace cv {
 CV_EXPORTS void write(FileStorage &fs, const String &name, const optflow::GPCTree::Node &node);
 
 CV_EXPORTS void read(const FileNode &fn, optflow::GPCTree::Node &node, optflow::GPCTree::Node);
-
 } // namespace cv
 
 #endif

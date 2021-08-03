@@ -50,7 +50,7 @@
 #endif
 
 #ifdef _MSC_VER
-                                                                                                                        #pragma warning( push )
+#pragma warning( push )
 #pragma warning( disable: 4127 )
 #endif
 
@@ -760,7 +760,6 @@ Mat::Mat(const std::initializer_list<int> sizes, const std::initializer_list<_Tp
     Mat((int) sizes.size(), (int *) sizes.begin(), traits::Type<_Tp>::value,
         (uchar *) list.begin()).copyTo(*this);
 }
-
 #endif
 
 #ifdef CV_CXX_STD_ARRAY
@@ -781,7 +780,6 @@ Mat::Mat(const std::array<_Tp, _Nm> &arr, bool copyData)
     } else
         Mat((int) arr.size(), 1, traits::Type<_Tp>::value, (uchar *) arr.data()).copyTo(*this);
 }
-
 #endif
 
 template<typename _Tp, int n>
@@ -1360,7 +1358,7 @@ template<typename _Tp>
 inline
 MatIterator_ <_Tp> Mat::end() {
     CV_DbgAssert(elemSize() == sizeof(_Tp));
-    MatIterator_ <_Tp> it((Mat_ < _Tp > *)
+    MatIterator_ < _Tp > it((Mat_ < _Tp > *)
     this);
     it += total();
     return it;
@@ -1396,7 +1394,6 @@ Mat::operator std::array<_Tp, _Nm>() const {
     copyTo(v);
     return v;
 }
-
 #endif
 
 template<typename _Tp, int n>
@@ -1784,7 +1781,6 @@ template<typename _Tp>
 inline
 Mat_<_Tp>::Mat_(const std::initializer_list<int> sizes, std::initializer_list<_Tp> list)
         : Mat(sizes, list) {}
-
 #endif
 
 #ifdef CV_CXX_STD_ARRAY
@@ -1794,7 +1790,6 @@ template<std::size_t _Nm>
 inline
 Mat_<_Tp>::Mat_(const std::array<_Tp, _Nm> &arr, bool copyData)
         : Mat(arr, copyData) {}
-
 #endif
 
 template<typename _Tp>
@@ -2094,7 +2089,6 @@ Mat_<_Tp>::operator std::array<_Tp, _Nm>() const {
     copyTo(a);
     return a;
 }
-
 #endif
 
 template<typename _Tp>
@@ -3941,11 +3935,8 @@ UMat &UMat::operator=(UMat &&m) {
 
 
 inline bool UMatData::hostCopyObsolete() const { return (flags & HOST_COPY_OBSOLETE) != 0; }
-
 inline bool UMatData::deviceCopyObsolete() const { return (flags & DEVICE_COPY_OBSOLETE) != 0; }
-
 inline bool UMatData::deviceMemMapped() const { return (flags & DEVICE_MEM_MAPPED) != 0; }
-
 inline bool UMatData::copyOnMap() const { return (flags & COPY_ON_MAP) != 0; }
 
 inline bool UMatData::tempUMat() const { return (flags & TEMP_UMAT) != 0; }

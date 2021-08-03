@@ -12,7 +12,8 @@
     <dji.ux.widget.FPVWidget
         android:id="@+id/fpvWidget"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true" />
 
     <dji.ux.widget.FPVOverlayWidget
         android:layout_width="match_parent"
@@ -92,12 +93,20 @@
             android:text="Start" />
 
         <Button
+            android:id="@+id/saveImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            tools:ignore="RtlHardcoded"
+            android:text="SaveImg" />
+
+        <Button
             android:id="@+id/c_calibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             tools:ignore="RtlHardcoded"
-            android:text="Start" />
+            android:text="calibrateCamera" />
 
         <!--<dji.ux.widget.AutoExposureLockWidget
             android:layout_width="30dp"

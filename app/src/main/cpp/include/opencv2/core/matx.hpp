@@ -54,9 +54,7 @@
 #include "opencv2/core/saturate.hpp"
 
 #ifdef CV_CXX11
-
 #include <initializer_list>
-
 #endif
 
 namespace cv {
@@ -824,7 +822,6 @@ The Vec class is commonly used to describe pixel types of multi-channel arrays. 
             val[i++] = elem;
         }
     }
-
 #endif
 
     template<typename _Tp, int m, int n>
@@ -1196,7 +1193,6 @@ The Vec class is commonly used to describe pixel types of multi-channel arrays. 
     inline
     Vec<_Tp, cn>::Vec(std::initializer_list<_Tp> list)
             : Matx<_Tp, cn, 1>(list) {}
-
 #endif
 
     template<typename _Tp, int cn>

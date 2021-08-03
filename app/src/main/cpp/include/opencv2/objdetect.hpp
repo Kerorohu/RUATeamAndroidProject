@@ -708,9 +708,7 @@ http://www.learnopencv.com/handwritten-digits-classification-an-opencv-c-python-
 #include "opencv2/objdetect/detection_based_tracker.hpp"
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/objdetect/objdetect_c.h"
-
 #endif
 
 #endif

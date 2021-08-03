@@ -49,13 +49,11 @@
 #include "opencv2/opencv_modules.hpp"
 
 #ifdef HAVE_OPENCV_XFEATURES2D
-
 #  include "opencv2/xfeatures2d/cuda.hpp"
-
 #endif
 
 namespace cv {
-    namespace detail {
+namespace detail {
 
 //! @addtogroup stitching_match
 //! @{
@@ -200,7 +198,6 @@ namespace cv {
             int num_octaves_, num_layers_;
             int num_octaves_descr_, num_layers_descr_;
         };
-
 #endif
 
 /** @brief Structure containing information about matches between two images.

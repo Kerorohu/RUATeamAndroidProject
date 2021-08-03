@@ -1606,7 +1606,6 @@ Point3_<_Tp>::operator Vec<_Tp2, 3>() const
     Point3_<_Tp>::operator Vec<_Tp, 3>() const {
         return Vec<_Tp, 3>(x, y, z);
     }
-
 #endif
 
     template<typename _Tp>

@@ -51,7 +51,7 @@
 #include "opencv2/core/cuda.hpp"
 
 namespace cv {
-    namespace detail {
+namespace detail {
 
 //! @addtogroup stitching_blend
 //! @{

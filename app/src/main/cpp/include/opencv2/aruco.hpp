@@ -73,7 +73,7 @@ the use of this software, even if advised of the possibility of such damage.
 */
 
 namespace cv {
-    namespace aruco {
+namespace aruco {
 
 //! @addtogroup aruco
 //! @{
@@ -292,6 +292,7 @@ namespace cv {
             /// The identifiers refers to the board dictionary
             CV_PROP std::vector<int> ids;
         };
+
 
 
 /**

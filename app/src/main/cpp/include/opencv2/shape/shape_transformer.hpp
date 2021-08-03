@@ -43,7 +43,6 @@
 
 #ifndef OPENCV_SHAPE_SHAPE_TRANSFORM_HPP
 #define OPENCV_SHAPE_SHAPE_TRANSFORM_HPP
-
 #include <vector>
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"

@@ -43,7 +43,6 @@
 
 #ifndef OPENCV_SHAPE_SHAPE_DISTANCE_HPP
 #define OPENCV_SHAPE_SHAPE_DISTANCE_HPP
-
 #include "opencv2/core.hpp"
 #include "opencv2/shape/hist_cost.hpp"
 #include "opencv2/shape/shape_transformer.hpp"

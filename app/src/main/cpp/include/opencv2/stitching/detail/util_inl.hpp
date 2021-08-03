@@ -50,43 +50,43 @@
 //! @cond IGNORED
 
 namespace cv {
-    namespace detail {
+namespace detail {
 
-        template<typename B>
-        B Graph::forEach(B body) const {
-            for (int i = 0; i < numVertices(); ++i) {
-                std::list<GraphEdge>::const_iterator edge = edges_[i].begin();
-                for (; edge != edges_[i].end(); ++edge)
-                    body(*edge);
-            }
-            return body;
+    template<typename B>
+    B Graph::forEach(B body) const {
+        for (int i = 0; i < numVertices(); ++i) {
+            std::list<GraphEdge>::const_iterator edge = edges_[i].begin();
+            for (; edge != edges_[i].end(); ++edge)
+                body(*edge);
         }
+        return body;
+    }
 
 
-        template<typename B>
-        B Graph::walkBreadthFirst(int from, B body) const {
-            std::vector<bool> was(numVertices(), false);
-            std::queue<int> vertices;
+    template<typename B>
+    B Graph::walkBreadthFirst(int from, B body) const {
+        std::vector<bool> was(numVertices(), false);
+        std::queue<int> vertices;
 
-            was[from] = true;
-            vertices.push(from);
+        was[from] = true;
+        vertices.push(from);
 
-            while (!vertices.empty()) {
-                int vertex = vertices.front();
-                vertices.pop();
+        while (!vertices.empty()) {
+            int vertex = vertices.front();
+            vertices.pop();
 
-                std::list<GraphEdge>::const_iterator edge = edges_[vertex].begin();
-                for (; edge != edges_[vertex].end(); ++edge) {
-                    if (!was[edge->to]) {
-                        body(*edge);
-                        was[edge->to] = true;
-                        vertices.push(edge->to);
-                    }
+            std::list<GraphEdge>::const_iterator edge = edges_[vertex].begin();
+            for (; edge != edges_[vertex].end(); ++edge) {
+                if (!was[edge->to]) {
+                    body(*edge);
+                    was[edge->to] = true;
+                    vertices.push(edge->to);
                 }
             }
-
-            return body;
         }
+
+        return body;
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////

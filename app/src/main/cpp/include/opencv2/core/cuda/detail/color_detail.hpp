@@ -541,7 +541,7 @@ namespace cv {
                 template<int bidx, typename T> static __device__ __forceinline__
 
                 T RGB2GrayConvert(const T *src) {
-                    return (T) CV_DESCALE(
+                    return (T)CV_DESCALE(
                             (unsigned) (src[bidx] * B2Y + src[1] * G2Y + src[bidx ^ 2] * R2Y),
                             yuv_shift);
                 }

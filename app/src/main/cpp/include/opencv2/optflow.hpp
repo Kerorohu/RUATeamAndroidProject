@@ -308,7 +308,6 @@ if the previous frame's flow field is passed).
         enough in most cases.
         @see setPatchSize */
     CV_WRAP virtual int getPatchSize() const = 0;
-
     /** @copybrief getPatchSize @see getPatchSize */
     CV_WRAP virtual void setPatchSize(int val) = 0;
 
@@ -316,7 +315,6 @@ if the previous frame's flow field is passed).
         to higher flow quality.
         @see setPatchStride */
     CV_WRAP virtual int getPatchStride() const = 0;
-
     /** @copybrief getPatchStride @see getPatchStride */
     CV_WRAP virtual void setPatchStride(int val) = 0;
 
@@ -324,7 +322,6 @@ if the previous frame's flow field is passed).
         may improve quality in some cases.
         @see setGradientDescentIterations */
     CV_WRAP virtual int getGradientDescentIterations() const = 0;
-
     /** @copybrief getGradientDescentIterations @see getGradientDescentIterations */
     CV_WRAP virtual void setGradientDescentIterations(int val) = 0;
 
@@ -333,28 +330,24 @@ if the previous frame's flow field is passed).
         high-quality flow.
     @see setGradientDescentIterations */
     CV_WRAP virtual int getVariationalRefinementIterations() const = 0;
-
     /** @copybrief getGradientDescentIterations @see getGradientDescentIterations */
     CV_WRAP virtual void setVariationalRefinementIterations(int val) = 0;
 
     /** @brief Weight of the smoothness term
     @see setVariationalRefinementAlpha */
     CV_WRAP virtual float getVariationalRefinementAlpha() const = 0;
-
     /** @copybrief getVariationalRefinementAlpha @see getVariationalRefinementAlpha */
     CV_WRAP virtual void setVariationalRefinementAlpha(float val) = 0;
 
     /** @brief Weight of the color constancy term
     @see setVariationalRefinementDelta */
     CV_WRAP virtual float getVariationalRefinementDelta() const = 0;
-
     /** @copybrief getVariationalRefinementDelta @see getVariationalRefinementDelta */
     CV_WRAP virtual void setVariationalRefinementDelta(float val) = 0;
 
     /** @brief Weight of the gradient constancy term
     @see setVariationalRefinementGamma */
     CV_WRAP virtual float getVariationalRefinementGamma() const = 0;
-
     /** @copybrief getVariationalRefinementGamma @see getVariationalRefinementGamma */
     CV_WRAP virtual void setVariationalRefinementGamma(float val) = 0;
 
@@ -365,7 +358,6 @@ if the previous frame's flow field is passed).
         in illumination.
     @see setUseMeanNormalization */
     CV_WRAP virtual bool getUseMeanNormalization() const = 0;
-
     /** @copybrief getUseMeanNormalization @see getUseMeanNormalization */
     CV_WRAP virtual void setUseMeanNormalization(bool val) = 0;
 

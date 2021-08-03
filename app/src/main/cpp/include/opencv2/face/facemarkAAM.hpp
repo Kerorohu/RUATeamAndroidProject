@@ -38,9 +38,8 @@ Mentor: Delia Passalacqua
 #define __OPENCV_FACEMARK_AAM_HPP__
 
 #include "opencv2/face/facemark_train.hpp"
-
 namespace cv {
-    namespace face {
+namespace face {
 
 //! @addtogroup face
 //! @{

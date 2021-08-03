@@ -61,7 +61,7 @@
 //! @cond IGNORED
 
 #ifdef __CUDACC__
-#define __CV_CUDA_HOST_DEVICE__ __host__ __device__ __forceinline__
+    #define __CV_CUDA_HOST_DEVICE__ __host__ __device__ __forceinline__
 #else
 #define __CV_CUDA_HOST_DEVICE__
 #endif

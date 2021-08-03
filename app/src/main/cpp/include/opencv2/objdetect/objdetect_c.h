@@ -47,7 +47,6 @@
 #include "opencv2/core/core_c.h"
 
 #ifdef __cplusplus
-
 #include <deque>
 #include <vector>
 

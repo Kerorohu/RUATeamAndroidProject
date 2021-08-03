@@ -40,7 +40,7 @@ Mentor: Delia Passalacqua
 #include "opencv2/face/facemark_train.hpp"
 
 namespace cv {
-    namespace face {
+namespace face {
 
 //! @addtogroup face
 //! @{

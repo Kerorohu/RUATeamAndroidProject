@@ -47,18 +47,18 @@
 #include <ostream>
 
 namespace cv {
-    namespace dnn {
-        CV__DNN_EXPERIMENTAL_NS_BEGIN
+namespace dnn {
+    CV__DNN_EXPERIMENTAL_NS_BEGIN
 
 //Useful shortcut
-        inline std::ostream
-        &
-        operator<< (std::ostream
-        &s,
-        cv::Range &r
-        ) {
-        return s << "[" << r.start << ", " << r.end << ")";
-    }
+    inline std::ostream
+    &
+    operator<< (std::ostream
+    &s,
+    cv::Range &r
+    ) {
+    return s << "[" << r.start << ", " << r.end << ")";
+}
 
 //Slicing
 

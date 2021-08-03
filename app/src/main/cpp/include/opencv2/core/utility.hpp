@@ -57,9 +57,7 @@
 #include <ostream>
 
 #ifdef CV_CXX11
-
 #include <functional>
-
 #endif
 
 namespace cv {
@@ -547,7 +545,6 @@ The function returns true if the optimized code is enabled. Otherwise, it return
                               double nstripes = -1.) {
         parallel_for_(range, ParallelLoopBodyLambdaWrapper(functor), nstripes);
     }
-
 #endif
 
 /////////////////////////////// forEach method of cv::Mat ////////////////////////////
@@ -1269,9 +1266,7 @@ For the described keys:
 } //namespace cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/core/core_c.h"
-
 #endif
 
 #endif //OPENCV_CORE_UTILITY_H

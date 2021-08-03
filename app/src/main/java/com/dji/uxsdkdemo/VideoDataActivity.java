@@ -52,7 +52,7 @@ public class VideoDataActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
 
-    public native byte[] exeAruco(byte[] input, int width, int height);
+    public native double[] exeAruco(Bitmap input, int width, int height);
 
     public native String stringFromJNI();
 
@@ -143,23 +143,34 @@ public class VideoDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bitmap = primaryVideoFeed.getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                width = bitmap.getWidth();
-                height = bitmap.getHeight();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] datas = baos.toByteArray();
-                byte[] res = exeAruco(datas, width, height);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                if (res.length == 0)
-                    textView.setText("res is null!");
-                else {
-                    textView.setText(res.toString());
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                width = bitmap.getWidth();
+//                height = bitmap.getHeight();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//                byte[] datas = baos.toByteArray();
+
+                //detect marker
+                double[] res = exeAruco(bitmap, width, height);
+
+//                BitmapFactory.Options options = new BitmapFactory.Options();
+//                options.inSampleSize = 2;
+
+                //Bitmap resb = BitmapFactory.decodeByteArray(res, 0, res.length);
+
+                if (res.length == 0) {
+                    textView.setText("no detect!");
+                } else {
+                    //showToast(Integer.toString(res.length));
+                    textView.setText("tvecs: ");
+                    //textView.append("\n");
+                    for (int i = 0; i < res.length; i++) {
+                        textView.append(Double.toString(res[i]));
+                        textView.append("\n");
+                    }
                 }
-                Bitmap resb = BitmapFactory.decodeByteArray(res, 0, res.length, options);
                 //Utils.bitmapToMat(bitmap, src);
                 //resT = exeAruco(src.getNativeObjAddr(),resMat.getNativeObjAddr());
-                imageView.setImageBitmap(resb);
+                //imageView.setImageBitmap(resb);
                 //              gray.release();
                 //              src.release();
             }

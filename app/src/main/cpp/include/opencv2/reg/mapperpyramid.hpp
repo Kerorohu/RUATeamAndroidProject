@@ -44,7 +44,7 @@
 #include "mapshift.hpp"
 
 namespace cv {
-    namespace reg {
+namespace reg {
 
 //! @addtogroup reg
 //! @{

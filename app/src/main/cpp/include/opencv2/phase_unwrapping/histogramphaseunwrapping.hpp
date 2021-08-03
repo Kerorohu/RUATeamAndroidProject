@@ -47,7 +47,7 @@
 #include "opencv2/phase_unwrapping/phase_unwrapping.hpp"
 
 namespace cv {
-    namespace phase_unwrapping {
+namespace phase_unwrapping {
 //! @addtogroup phase_unwrapping
 //! @{
 

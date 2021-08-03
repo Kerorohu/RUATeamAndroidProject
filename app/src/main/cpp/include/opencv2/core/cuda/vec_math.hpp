@@ -1027,281 +1027,168 @@ namespace cv {
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(+, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uchar, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, char, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, ushort, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, short, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(-, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uchar, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, char, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, ushort, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, short, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(*, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uchar, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, char, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, ushort, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, short, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(/, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(==, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(!=, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(>=, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(<=, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&&, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, char, char, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, ushort, ushort, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, short, short, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, int, int, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, uint, uint, uchar)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, float, float, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(||, double, double, uchar)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, char, char, char)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, ushort, ushort, ushort)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, short, short, short)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(&, uint, uint, uint)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, char, char, char)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, ushort, ushort, ushort)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, short, short, short)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(|, uint, uint, uint)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, char, char, char)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, ushort, ushort, ushort)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, short, short, short)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, uint, uint, uint)
 
 #undef CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP
@@ -1327,67 +1214,39 @@ CV_CUDEV_IMPLEMENT_SCALAR_BINARY_OP(^, uint, uint, uint)
     }
 
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, char, char)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, ushort, ushort)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, short, short)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, uint, uint)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::max, int, int)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::fmaxf, float, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(max, ::fmax, double, double)
 
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, char, char)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, ushort, ushort)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, short, short)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, uint, uint)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::min, int, int)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::fminf, float, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(min, ::fmin, double, double)
 
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, uchar, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, char, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, ushort, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, short, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, uint, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, int, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypotf, float, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(hypot, ::hypot, double, double)
 
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, uchar, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, char, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, ushort, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, short, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, uint, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, int, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2f, float, float)
-
 CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2, double, double)
 
 #undef CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC
@@ -1429,143 +1288,79 @@ CV_CUDEV_IMPLEMENT_VEC_BINARY_FUNC(atan2, ::atan2, double, double)
     }
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, char, char, char)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, ushort, ushort, ushort)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, short, short, short)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::max, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmaxf, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(max, ::fmax, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, uchar, uchar, uchar)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, char, char, char)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, ushort, ushort, ushort)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, short, short, short)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, uint, uint, uint)
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::min, int, int, int)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fminf, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(min, ::fmin, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypotf, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(hypot, ::hypot, double, double, double)
 
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, uchar, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, uchar, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, char, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, char, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, ushort, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, ushort, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, short, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, short, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, uint, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, uint, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, int, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, int, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2f, float, float, float)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, float, double, double)
-
 CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC(atan2, ::atan2, double, double, double)
 
 #undef CV_CUDEV_IMPLEMENT_SCALAR_BINARY_FUNC

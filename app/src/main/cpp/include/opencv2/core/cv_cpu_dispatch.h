@@ -148,9 +148,7 @@ struct VZeroUpperGuard {
 # include <arm_neon.h>
 # define CV_NEON 1
 #elif defined(__ARM_NEON__) || (defined (__ARM_NEON) && defined(__aarch64__))
-
 #  include <arm_neon.h>
-
 #  define CV_NEON 1
 #elif defined(__VSX__) && defined(__PPC64__) && defined(__LITTLE_ENDIAN__)
 #  include <altivec.h>

@@ -42,7 +42,6 @@
 //
 //M*/
 #include "opencv2/core.hpp"
-
 namespace cv {
     namespace ximgproc {
         CV_EXPORTS_W void

@@ -74,15 +74,11 @@ CV_EXPORTS
 - (id)initWithParentView:(UIView *)parent;
 
 - (void)createCaptureOutput;
-
 - (void)createVideoPreviewLayer;
-
 - (void)updateOrientation;
 
 - (void)lockFocus;
-
 - (void)unlockFocus;
-
 - (void)lockExposure;
 
 - (void)unlockExposure;

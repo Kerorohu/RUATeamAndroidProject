@@ -54,9 +54,7 @@
 #include "opencv2/core/bufferpool.hpp"
 
 #ifdef CV_CXX11
-
 #include <type_traits>
-
 #endif
 
 namespace cv {
@@ -1224,7 +1222,6 @@ including std::sort().
     */
         template<typename _Tp>
         explicit Mat(const std::initializer_list<int> sizes, const std::initializer_list<_Tp> list);
-
 #endif
 
 #ifdef CV_CXX_STD_ARRAY
@@ -1233,7 +1230,6 @@ including std::sort().
     */
         template<typename _Tp, size_t _Nm>
         explicit Mat(const std::array<_Tp, _Nm> &arr, bool copyData = false);
-
 #endif
 
         /** @overload

@@ -59,12 +59,10 @@
 #include "opencv2/core/cvdef.h"
 
 #ifndef SKIP_INCLUDES
-
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <float.h>
-
 #endif // SKIP_INCLUDES
 
 #if defined _WIN32
@@ -100,9 +98,7 @@
 #endif
 
 #ifdef __cplusplus
-
 #  include "opencv2/core.hpp"
-
 #endif
 
 /** @addtogroup core_c
@@ -530,7 +526,6 @@ inline CvMat::CvMat(const cv::Mat &m) {
     step = (int) m.step[0];
     type = (type & ~cv::Mat::CONTINUOUS_FLAG) | (m.flags & cv::Mat::CONTINUOUS_FLAG);
 }
-
 #endif
 
 

@@ -42,7 +42,7 @@ the use of this software, even if advised of the possibility of such damage.
 #include <opencv2/core.hpp>
 
 namespace cv {
-    namespace aruco {
+namespace aruco {
 
 //! @addtogroup aruco
 //! @{

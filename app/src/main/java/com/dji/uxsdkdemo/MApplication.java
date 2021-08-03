@@ -17,6 +17,15 @@ public class MApplication extends Application {
     private DemoApplication demoApplication;
     private static BaseProduct product;
     private static BluetoothProductConnector bluetoothConnector = null;
+    private static float[] points;
+
+    public static float[] getPoints() {
+        return points;
+    }
+
+    public static void setPoints(float[] points) {
+        MApplication.points = points;
+    }
 
     public static synchronized BaseProduct getProductInstance() {
         product = DJISDKManager.getInstance().getProduct();
@@ -57,6 +66,7 @@ public class MApplication extends Application {
         }
         app = this;
     }
+
 
     @Override
     public void onCreate() {

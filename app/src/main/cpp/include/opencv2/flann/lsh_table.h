@@ -46,13 +46,10 @@
 #  define USE_UNORDERED_MAP 0
 #endif
 #if USE_UNORDERED_MAP
-
 #include <unordered_map>
-
 #else
 #include <map>
 #endif
-
 #include <math.h>
 #include <stddef.h>
 

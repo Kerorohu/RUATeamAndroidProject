@@ -146,11 +146,9 @@ The number of images within each octave of a gaussian pyramid. It is set to 2 by
     CV_WRAP virtual int getNOctaveLayers() const = 0;
 
     CV_WRAP virtual void setExtended(bool extended) = 0;
-
     CV_WRAP virtual bool getExtended() const = 0;
 
     CV_WRAP virtual void setUpright(bool upright) = 0;
-
     CV_WRAP virtual bool getUpright() const = 0;
 };
 

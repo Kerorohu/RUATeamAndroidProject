@@ -93,31 +93,24 @@ namespace cv {
                                  OutputArray disparity) = 0;
 
             virtual int getMinDisparity() const = 0;
-
             virtual void setMinDisparity(int minDisparity) = 0;
 
             virtual int getNumDisparities() const = 0;
-
             virtual void setNumDisparities(int numDisparities) = 0;
 
             virtual int getBlockSize() const = 0;
-
             virtual void setBlockSize(int blockSize) = 0;
 
             virtual int getSpeckleWindowSize() const = 0;
-
             virtual void setSpeckleWindowSize(int speckleWindowSize) = 0;
 
             virtual int getSpeckleRange() const = 0;
-
             virtual void setSpeckleRange(int speckleRange) = 0;
 
             virtual int getDisp12MaxDiff() const = 0;
-
             virtual void setDisp12MaxDiff(int disp12MaxDiff) = 0;
 
         };
-
         //!speckle removal algorithms. These algorithms have the purpose of removing small regions
         enum {
             CV_SPECKLE_REMOVAL_ALGORITHM, CV_SPECKLE_REMOVAL_AVG_ALGORITHM
@@ -150,15 +143,12 @@ namespace cv {
             virtual void setPreFilterCap(int preFilterCap) = 0;
 
             virtual int getTextureThreshold() const = 0;
-
             virtual void setTextureThreshold(int textureThreshold) = 0;
 
             virtual int getUniquenessRatio() const = 0;
-
             virtual void setUniquenessRatio(int uniquenessRatio) = 0;
 
             virtual int getSmallerBlockSize() const = 0;
-
             virtual void setSmallerBlockSize(int blockSize) = 0;
 
             virtual int getScalleFactor() const = 0;
@@ -174,11 +164,9 @@ namespace cv {
             virtual void setUsePrefilter(bool factor) = 0;
 
             virtual int getBinaryKernelType() const = 0;
-
             virtual void setBinaryKernelType(int value) = 0;
 
             virtual int getAgregationWindowSize() const = 0;
-
             virtual void setAgregationWindowSize(int value) = 0;
 
             /** @brief Creates StereoBM object
@@ -233,15 +221,12 @@ namespace cv {
             virtual void setUniquenessRatio(int uniquenessRatio) = 0;
 
             virtual int getP1() const = 0;
-
             virtual void setP1(int P1) = 0;
 
             virtual int getP2() const = 0;
-
             virtual void setP2(int P2) = 0;
 
             virtual int getMode() const = 0;
-
             virtual void setMode(int mode) = 0;
 
             virtual int getSpekleRemovalTechnique() const = 0;
@@ -249,11 +234,9 @@ namespace cv {
             virtual void setSpekleRemovalTechnique(int factor) = 0;
 
             virtual int getBinaryKernelType() const = 0;
-
             virtual void setBinaryKernelType(int value) = 0;
 
             virtual int getSubPixelInterpolationMethod() const = 0;
-
             virtual void setSubPixelInterpolationMethod(int value) = 0;
 
             /** @brief Creates StereoSGBM object

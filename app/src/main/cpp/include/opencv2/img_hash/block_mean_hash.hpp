@@ -8,7 +8,7 @@
 #include "img_hash_base.hpp"
 
 namespace cv {
-    namespace img_hash {
+namespace img_hash {
 
 //! @addtogroup img_hash
 //! @{

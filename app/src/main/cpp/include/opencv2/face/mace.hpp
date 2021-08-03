@@ -9,7 +9,7 @@
 
 
 namespace cv {
-    namespace face {
+namespace face {
 
 //! @addtogroup face
 //! @{

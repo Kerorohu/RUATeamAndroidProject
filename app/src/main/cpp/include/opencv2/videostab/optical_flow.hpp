@@ -47,7 +47,7 @@
 #include "opencv2/opencv_modules.hpp"
 
 #ifdef HAVE_OPENCV_CUDAOPTFLOW
-#include "opencv2/cudaoptflow.hpp"
+  #include "opencv2/cudaoptflow.hpp"
 #endif
 
 namespace cv {

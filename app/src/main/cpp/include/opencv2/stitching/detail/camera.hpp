@@ -46,7 +46,7 @@
 #include "opencv2/core.hpp"
 
 namespace cv {
-    namespace detail {
+namespace detail {
 
 //! @addtogroup stitching
 //! @{

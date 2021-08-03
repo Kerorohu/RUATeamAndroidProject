@@ -41,12 +41,11 @@
 
 #ifndef OPENCV_DNN_DNN_ALL_LAYERS_HPP
 #define OPENCV_DNN_DNN_ALL_LAYERS_HPP
-
 #include <opencv2/dnn.hpp>
 
 namespace cv {
-    namespace dnn {
-        CV__DNN_EXPERIMENTAL_NS_BEGIN
+namespace dnn {
+    CV__DNN_EXPERIMENTAL_NS_BEGIN
 //! @addtogroup dnn
 //! @{
 
@@ -72,12 +71,12 @@ namespace cv {
   - Dropout (since it does nothing on forward pass -))
 */
 
-        class CV_EXPORTS BlankLayer
-        : public Layer {
-        public:
+    class CV_EXPORTS BlankLayer
+    : public Layer {
+    public:
 
-        static Ptr <Layer> create(const LayerParams &params);
-    };
+    static Ptr <Layer> create(const LayerParams &params);
+};
 
     //! LSTM recurrent layer
     class CV_EXPORTS LSTMLayer

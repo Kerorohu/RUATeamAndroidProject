@@ -25,7 +25,7 @@ Mentor: Delia Passalacqua
 
 
 namespace cv {
-    namespace face {
+namespace face {
 
 //! @addtogroup face
 //! @{

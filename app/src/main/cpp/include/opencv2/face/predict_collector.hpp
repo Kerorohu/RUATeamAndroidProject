@@ -53,7 +53,7 @@ the use of this software, even if advised of the possibility of such damage.
 #include "opencv2/core/cvstd.hpp"
 
 namespace cv {
-    namespace face {
+namespace face {
 //! @addtogroup face
 //! @{
 /** @brief Abstract base class for all strategies of prediction result handling

@@ -47,7 +47,7 @@
 #include "matchers.hpp"
 
 namespace cv {
-    namespace detail {
+namespace detail {
 
 //! @addtogroup stitching_autocalib
 //! @{

@@ -49,7 +49,7 @@
 #include <opencv2/calib3d.hpp>
 
 namespace cv {
-    namespace structured_light {
+namespace structured_light {
 //! @addtogroup structured_light
 //! @{
 

@@ -4864,9 +4864,7 @@ for(int i = 0; i < it2.count; i++, ++it2)
 } // cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/imgproc/imgproc_c.h"
-
 #endif
 
 #endif

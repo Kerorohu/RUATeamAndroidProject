@@ -61,9 +61,7 @@
 \****************************************************************************************/
 
 #ifdef __cplusplus
-
 #  include <cmath>
-
 #else
 #  ifdef __BORLANDC__
 #    include <fastmath.h>

@@ -2497,9 +2497,7 @@ check, quadratic interpolation and speckle filtering).
 } //end namespace cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/calib3d/calib3d_c.h"
-
 #endif
 
 #endif

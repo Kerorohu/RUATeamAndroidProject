@@ -8,7 +8,7 @@
 #include "opencv2/core.hpp"
 
 namespace cv {
-    namespace img_hash {
+namespace img_hash {
 
 //! @addtogroup img_hash
 //! @{

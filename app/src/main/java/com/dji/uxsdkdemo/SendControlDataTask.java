@@ -14,6 +14,7 @@ public class SendControlDataTask extends TimerTask {
     private float _roll;
     private float _yaw;
     private float _throttle;
+    private DJIError djiError;
     FlightController flightController;
     private String TAG = this.getClass().getSimpleName();
     public SendControlDataTask(FlightController flightController) {
@@ -36,9 +37,16 @@ public class SendControlDataTask extends TimerTask {
         this._throttle = _throttle;
     }
 
+    public DJIError getDjiError() {
+        return djiError;
+    }
+
+    public void setDjiError(DJIError djiError) {
+        this.djiError = djiError;
+    }
+
     @Override
     public void run() {
-
         flightController.sendVirtualStickFlightControlData(new FlightControlData(_pitch,
                         _roll,
                         _yaw,
@@ -46,10 +54,11 @@ public class SendControlDataTask extends TimerTask {
                 new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(DJIError djiError) {
-                        if(null != djiError)
+                        if (null != djiError) {
                             Log.i(TAG, "an error occured while run Task: " + djiError.getDescription());
+                            setDjiError(djiError);
+                        }
                     }
                 });
-
     }
 }

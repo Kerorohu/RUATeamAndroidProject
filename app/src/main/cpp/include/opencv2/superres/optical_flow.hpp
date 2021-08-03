@@ -76,19 +76,14 @@ namespace cv {
 
             /** @see setWindowSize */
             virtual int getWindowSize() const = 0;
-
             /** @copybrief getWindowSize @see getWindowSize */
             virtual void setWindowSize(int val) = 0;
-
             /** @see setIterations */
             virtual int getIterations() const = 0;
-
             /** @copybrief getIterations @see getIterations */
             virtual void setIterations(int val) = 0;
-
             /** @see setPolyN */
             virtual int getPolyN() const = 0;
-
             /** @copybrief getPolyN @see getPolyN */
             virtual void setPolyN(int val) = 0;
 
@@ -129,25 +124,18 @@ namespace cv {
 
             /** @see setTheta */
             virtual double getTheta() const = 0;
-
             /** @copybrief getTheta @see getTheta */
             virtual void setTheta(double val) = 0;
-
             /** @see setScalesNumber */
             virtual int getScalesNumber() const = 0;
-
             /** @copybrief getScalesNumber @see getScalesNumber */
             virtual void setScalesNumber(int val) = 0;
-
             /** @see setWarpingsNumber */
             virtual int getWarpingsNumber() const = 0;
-
             /** @copybrief getWarpingsNumber @see getWarpingsNumber */
             virtual void setWarpingsNumber(int val) = 0;
-
             /** @see setEpsilon */
             virtual double getEpsilon() const = 0;
-
             /** @copybrief getEpsilon @see getEpsilon */
             virtual void setEpsilon(double val) = 0;
 
@@ -186,13 +174,11 @@ namespace cv {
             //! @brief Pyramid scale factor
             /** @see setScaleFactor */
             virtual double getScaleFactor() const = 0;
-
             /** @copybrief getScaleFactor @see getScaleFactor */
             virtual void setScaleFactor(double val) = 0;
             //! @brief Number of lagged non-linearity iterations (inner loop)
             /** @see setInnerIterations */
             virtual int getInnerIterations() const = 0;
-
             /** @copybrief getInnerIterations @see getInnerIterations */
             virtual void setInnerIterations(int val) = 0;
             //! @brief Number of warping iterations (number of pyramid levels)

@@ -895,9 +895,7 @@ contrast while preserving, or enhancing, high-contrast features.
 } // cv
 
 #ifndef DISABLE_OPENCV_24_COMPATIBILITY
-
 #include "opencv2/photo/photo_c.h"
-
 #endif
 
 #endif

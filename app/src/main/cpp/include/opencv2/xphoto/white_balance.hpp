@@ -98,14 +98,12 @@ namespace cv {
     /** @brief Output image range minimum value
     @see setOutputMin */
     CV_WRAP virtual float getOutputMin() const = 0;
-
     /** @copybrief getOutputMin @see getOutputMin */
     CV_WRAP virtual void setOutputMin(float val) = 0;
 
     /** @brief Output image range maximum value
     @see setOutputMax */
     CV_WRAP virtual float getOutputMax() const = 0;
-
     /** @copybrief getOutputMax @see getOutputMax */
     CV_WRAP virtual void setOutputMax(float val) = 0;
 

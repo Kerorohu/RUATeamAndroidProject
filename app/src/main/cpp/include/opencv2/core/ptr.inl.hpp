@@ -48,10 +48,10 @@
 
 namespace cv {
 
-    template<typename Y>
-    void DefaultDeleter<Y>::operator()(Y *p) const {
-        delete p;
-    }
+template<typename Y>
+void DefaultDeleter<Y>::operator()(Y *p) const {
+    delete p;
+}
 
     namespace detail {
 

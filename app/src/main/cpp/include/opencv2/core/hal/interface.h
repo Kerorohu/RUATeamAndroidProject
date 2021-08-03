@@ -12,9 +12,7 @@
 //! @}
 
 #ifdef __cplusplus
-
 #include <cstddef>
-
 #else
 #include <stddef.h>
 #include <stdbool.h>
@@ -33,11 +31,9 @@
 //! @{
 #if !defined _MSC_VER && !defined __BORLANDC__
 #  if defined __cplusplus && __cplusplus >= 201103L && !defined __APPLE__
-
 #    include <cstdint>
-
 #    ifdef __NEWLIB__
-typedef unsigned int uint;
+        typedef unsigned int uint;
 #    else
 typedef std::uint32_t uint;
 #    endif

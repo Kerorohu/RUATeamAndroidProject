@@ -355,7 +355,6 @@ namespace cv {
                     }
                 }
             };
-
         protected:
             //arrays used in the region removal
             Mat_<int> speckleY;
@@ -554,7 +553,6 @@ namespace cv {
                               makeMap(costVolume, th, disparity, confidenceCheck, scallingFactor,
                                       mapFinal));
             }
-
         public:
             //!a median filter of 1x9 and 9x1
             //!1x9 median filter
