@@ -1,0 +1,3 @@
+D:/Project/AndroidProject/UXSDKDemo/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir
+D:/Project/AndroidProject/UXSDKDemo/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Project/AndroidProject/UXSDKDemo/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir

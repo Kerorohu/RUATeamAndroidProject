@@ -1,0 +1,24 @@
+{
+  "buildFiles": [
+    "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\android.toolchain.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\android-legacy.toolchain.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\platforms.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\compiler_id.cmake"
+  ],
+  "cleanCommands": [
+    "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\debug\\arm64-v8a\" clean"
+  ],
+  "buildTargetsCommand": "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\debug\\arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Debug-arm64-v8a": {
+      "artifactName": "native-lib",
+      "buildCommand": "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\debug\\arm64-v8a\" native-lib",
+      "abi": "arm64-v8a",
+      "output": "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\build\\intermediates\\cmake\\debug\\obj\\arm64-v8a\\libnative-lib.so",
+      "runtimeFiles": [
+        "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\libs\\arm64-v8a\\libopencv_java3.so"
+      ]
+    }
+  }
+}

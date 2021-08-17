@@ -1,0 +1,64 @@
+ninja: Entering directory `D:\Project\AndroidProject\UXSDKDemo\app\.cxx\cmake\debug\arm64-v8a'
+[1/2] Building CXX object CMakeFiles/native-lib.dir/native-lib.cpp.o
+FAILED: CMakeFiles/native-lib.dir/native-lib.cpp.o 
+D:\AndroidSDK\ndk\23.0.7344513\toolchains\llvm\prebuilt\windows-x86_64\bin\clang++.exe --target=aarch64-none-linux-android21 --gcc-toolchain=D:/AndroidSDK/ndk/23.0.7344513/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/23.0.7344513/toolchains/llvm/prebuilt/windows-x86_64/sysroot  -Dnative_lib_EXPORTS -ID:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++11 -std=gnu++11 -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/native-lib.dir/native-lib.cpp.o -MF CMakeFiles\native-lib.dir\native-lib.cpp.o.d -o CMakeFiles/native-lib.dir/native-lib.cpp.o -c D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:12:17: error: expected namespace name
+using namespace cv;
+                ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:17:54: error: use of undeclared identifier 'cv'
+bool BitmapToMatrix(JNIEnv *env, jobject obj_bitmap, cv::Mat &matrix) {
+                                                     ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:29:9: error: use of undeclared identifier 'cv'
+        cv::Mat tmp(bitmapInfo.height, bitmapInfo.width, CV_8UC4, bitmapPixels);    // 建立临时 mat
+        ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:30:9: error: use of undeclared identifier 'tmp'
+        tmp.copyTo(matrix);                                                         // 拷贝到目标 matrix
+        ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:32:9: error: use of undeclared identifier 'cv'
+        cv::Mat tmp(bitmapInfo.height, bitmapInfo.width, CV_8UC2, bitmapPixels);
+        ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:33:9: error: use of undeclared identifier 'cv'
+        cv::cvtColor(tmp, matrix, cv::COLOR_BGR5652RGB);
+        ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:33:35: error: use of undeclared identifier 'cv'
+        cv::cvtColor(tmp, matrix, cv::COLOR_BGR5652RGB);
+                                  ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:33:22: error: use of undeclared identifier 'tmp'
+        cv::cvtColor(tmp, matrix, cv::COLOR_BGR5652RGB);
+                     ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:43:26: error: use of undeclared identifier 'CV_PI'
+    double rz = thetaz * CV_PI / 180;
+                         ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:55:26: error: use of undeclared identifier 'CV_PI'
+    double ry = thetay * CV_PI / 180;
+                         ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:67:26: error: use of undeclared identifier 'CV_PI'
+    double rx = thetax * CV_PI / 180;
+                         ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:72:34: error: use of undeclared identifier 'cv'
+bool MatrixToBitmap(JNIEnv *env, cv::Mat &matrix, jobject obj_bitmap) {
+                                 ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:83:35: error: use of undeclared identifier 'CV_8UC1'
+    ASSERT_FALSE(matrix.type() == CV_8UC1 || matrix.type() == CV_8UC3 || matrix.type() == CV_8UC4);
+                                  ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:83:63: error: use of undeclared identifier 'CV_8UC3'
+    ASSERT_FALSE(matrix.type() == CV_8UC1 || matrix.type() == CV_8UC3 || matrix.type() == CV_8UC4);
+                                                              ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:83:91: error: use of undeclared identifier 'CV_8UC4'
+    ASSERT_FALSE(matrix.type() == CV_8UC1 || matrix.type() == CV_8UC3 || matrix.type() == CV_8UC4);
+                                                                                          ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:88:9: error: use of undeclared identifier 'cv'
+        cv::Mat tmp(bitmapInfo.height, bitmapInfo.width, CV_8UC4, bitmapPixels);
+        ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:91:17: error: use of undeclared identifier 'cv'
+                cv::cvtColor(matrix, tmp, cv::COLOR_GRAY2RGBA);
+                ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:91:43: error: use of undeclared identifier 'cv'
+                cv::cvtColor(matrix, tmp, cv::COLOR_GRAY2RGBA);
+                                          ^
+D:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/native-lib.cpp:91:38: error: use of undeclared identifier 'tmp'
+                cv::cvtColor(matrix, tmp, cv::COLOR_GRAY2RGBA);
+                                     ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ninja: build stopped: subcommand failed.

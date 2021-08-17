@@ -16,5 +16,9 @@
     <string name="please_wait">Please, wait</string>
     <string name="original">Original</string>
     <string name="undistorted">Undistorted</string>
+    <string name="lon">经度</string>
+    <string name="lat">纬度</string>
+    <string name="submit">确定</string>
+    <string name="alt">高度</string>
 
 </resources>

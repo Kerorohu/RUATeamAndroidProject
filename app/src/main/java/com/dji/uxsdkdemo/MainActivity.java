@@ -1,7 +1,10 @@
 package com.dji.uxsdkdemo;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +19,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,8 @@ import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionState;
 import dji.common.product.Model;
 import dji.common.util.CommonCallbacks;
+import dji.keysdk.FlightControllerKey;
+import dji.keysdk.KeyManager;
 import dji.sdk.camera.*;
 import dji.common.flightcontroller.ObstacleDetectionSector;
 import dji.common.flightcontroller.VisionDetectionState;
@@ -61,8 +67,8 @@ import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.sdkmanager.LiveStreamManager;
 import dji.sdksharedlib.DJISDKCache;
 
-import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
+//import org.opencv.android.OpenCVLoader;
+//import org.opencv.core.Mat;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,34 +78,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+import static dji.keysdk.FlightControllerKey.HOME_LOCATION_LATITUDE;
+import static dji.keysdk.FlightControllerKey.HOME_LOCATION_LONGITUDE;
+
 public class MainActivity extends AppCompatActivity {
-    static {
-        System.loadLibrary("native-lib");
-    }
+    private static final double ONE_METER_OFFSET = 0.00000899322;
+//    static {
+//        System.loadLibrary("native-lib");
+//    }
 
     private Handler mHandler;
     private boolean mRunning = true;
 
-    Runnable mArucoDetectRunnable = new Runnable() {
-        @Override
-        public void run() {
-            while (mRunning) {
-                bitmap = fpv.getBitmap();
-                if (bitmap != null) {
-                    float[] points = calibratePoint(bitmap, bitmap.getWidth(), bitmap.getHeight());
-                    app.setPoints(points);
-                }
-
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-            //bitmap.recycle();
-        }
-    };
+//    Runnable mArucoDetectRunnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            while (mRunning) {
+//                bitmap = fpv.getBitmap();
+//                if (bitmap != null) {
+//                    float[] points = calibratePoint(bitmap, bitmap.getWidth(), bitmap.getHeight());
+//                    app.setPoints(points);
+//                }
+//
+//                try {
+//                    Thread.sleep(300);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//            //bitmap.recycle();
+//        }
+//    };
 
     private Compass compass;
     private WaypointMissionOperator waypointMissionOperator;
@@ -119,12 +129,15 @@ public class MainActivity extends AppCompatActivity {
     private int count;
 
     //private native void cameraCalibrate(Bitmap[] bmps,long rvecs,long tvecs);
-    private native float[] calibratePoint(Bitmap input, int width, int height);
+    //private native float[] calibratePoint(Bitmap input, int width, int height);
 
     //xiaoweigeCode
     protected double nowLatitude;
     protected double nowLongitude;
     protected double nowAltitude;
+    protected double aimLatitude = 0;
+    protected double aimLongitude = 0;
+    protected double aimAltitude = 0;
     protected FlightMode flightState;
     protected String IP_Address;
     protected int port;
@@ -132,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     double car_Longitude;
     double car_Updata;
     int loadready = 0;
+    private FlightController flightController;
 
     Boolean temp;
     byte[] bytes;
@@ -163,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn = (Button) findViewById(R.id.start);
         Button cc = (Button) findViewById(R.id.saveImg);
-        Button cca = (Button) findViewById(R.id.c_calibration);
+//        Button cca = (Button) findViewById(R.id.c_calibration);
         fpv = (TextureView) findViewById(R.id.fpvWidget);
         bitmaps = new Bitmap[10];
         count = 0;
@@ -175,9 +189,6 @@ public class MainActivity extends AppCompatActivity {
         tempf[1] = 0;
         app.setPoints(tempf);
 
-        nowLatitude = 181;
-        nowLongitude = 181;
-        nowAltitude = 0;
         flightState = null;
         IP_Address = "192.168.1.120";
         port = 54321;
@@ -202,14 +213,194 @@ public class MainActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MainActivity.this,CameraCalibrationActivity.class);
 //                startActivity(intent);
 
-                //Aruco测试
-                bytes = "hello world".getBytes();
-                if (bytes != null) {
-                    Intent intent = new Intent(MainActivity.this, VideoDataActivity.class);
-                    startActivityForResult(intent, 1);
-                } else {
-                    showToast("bytes is null!");
-                }
+//                //Aruco测试
+//                bytes = "hello world".getBytes();
+//                if (bytes != null) {
+//                    Intent intent = new Intent(MainActivity.this, VideoDataActivity.class);
+//                    startActivityForResult(intent, 1);
+//                } else {
+//                    showToast("bytes is null!");
+//                }
+
+                //任务数据初始化
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                View view2 = View.inflate(MainActivity.this, R.layout.input, null);
+                final EditText lon = (EditText) view2.findViewById(R.id.username);
+                final EditText lat = (EditText) view2.findViewById(R.id.password);
+                final EditText alt = (EditText) view2.findViewById(R.id.alt);
+                builder.setTitle("Input").setIcon(R.drawable.ic_access_locker_info).setView(view2).setNegativeButton("取消", null);
+                builder.setCancelable(true);
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String tlon = lon.getText().toString().trim();
+                        String tlat = lat.getText().toString().trim();
+                        String talt = alt.getText().toString().trim();
+                        Double dlon;
+                        Double dlat;
+                        Double dalt;
+                        try {
+                            dlon = Double.valueOf(tlon);
+                            dlat = Double.valueOf(tlat);
+                            dalt = Double.valueOf(talt);
+                            aimLatitude = dlat;
+                            aimLongitude = dlon;
+                            aimAltitude = dalt;
+                        } catch (NumberFormatException e) {
+                            showToast("输入数据有误");
+                        }
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+//                        //1.云台向下
+//                        Rotation.Builder builder = new Rotation.Builder().mode(RotationMode.ABSOLUTE_ANGLE).time(2);
+//                        builder.pitch((float) (-90.0));
+//                        sendRotateGimbalCommand(builder.build());
+//                        builder.yaw((float) (0));
+//                        sendRotateGimbalCommand(builder.build());
+//                        builder.roll((float) (0));
+//                        sendRotateGimbalCommand(builder.build());
+
+                                //3.飞行实例获取
+                                if (MApplication.isAircraftConnected()) {
+                                    if (ModuleVerificationUtil.isFlightControllerAvailable()) {
+                                        flightController =
+                                                ((Aircraft) MApplication.getProductInstance()).getFlightController();
+
+                                        //4.mission任务初始化
+                                        while (waypointMissionOperator == null) {
+                                            waypointMissionOperator = MissionControl.getInstance().getWaypointMissionOperator();
+                                            if (waypointMissionOperator == null)
+                                                showToast("start init waypointOperator");
+                                        }
+
+                                        if (MApplication.isAircraftConnected()) {
+                                            if (ModuleVerificationUtil.isFlightControllerAvailable()) {
+                                                if (flightController != null) {
+                                                    flightController.setStateCallback(new FlightControllerState.Callback() {
+                                                        @Override
+                                                        public void onUpdate(@NonNull FlightControllerState flightControllerState) {
+                                                            nowLatitude = flightControllerState.getAircraftLocation().getLatitude();
+                                                            nowLongitude = flightControllerState.getAircraftLocation().getLongitude();
+                                                            nowAltitude = flightControllerState.getAircraftLocation().getAltitude();
+                                                            flightState = flightControllerState.getFlightMode();
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+
+
+                                        //6. 起飞
+                                        if (nowAltitude < 0.1) {
+                                            flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
+                                                @Override
+                                                public void onResult(DJIError djiError) {
+                                                    showToast(djiError == null ? "take off!" : djiError.getDescription());
+                                                }
+                                            });
+
+                                            try {
+                                                Thread.sleep(5000);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            showToast("is already fly");
+                                        }
+
+                                        //8.waypoint执行
+//                                waypointMissionOperator.clearMission();
+                                        //创建waypoint任务
+                                        mission = createWaypointMission(aimLatitude, aimLongitude, (float) aimAltitude);
+//                              mission = createRandomWaypointMission(1,1);
+
+                                        if (mission != null) {
+                                            DJIError djiError = waypointMissionOperator.loadMission(mission);
+                                            if (djiError != null)
+                                                showToast(djiError.getDescription());
+                                            if (WaypointMissionState.READY_TO_RETRY_UPLOAD.equals(waypointMissionOperator.getCurrentState())
+                                                    || WaypointMissionState.READY_TO_UPLOAD.equals(waypointMissionOperator.getCurrentState())) {
+
+                                                waypointMissionOperator.uploadMission(new CommonCallbacks.CompletionCallback() {
+                                                    @Override
+                                                    public void onResult(DJIError djiError) {
+                                                        if (djiError == null) {
+                                                            showToast("upload success");
+                                                        } else {
+                                                            showToast("retry");
+                                                            waypointMissionOperator.retryUploadMission(new CommonCallbacks.CompletionCallback() {
+                                                                @Override
+                                                                public void onResult(DJIError djiError) {
+                                                                    if (djiError == null) {
+                                                                        showToast("upload success");
+                                                                    } else {
+                                                                        showToast("retryMission: " + djiError.getDescription());
+                                                                    }
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            } else {
+                                                showToast("Not ready!");
+                                            }
+
+                                        } else {
+                                            //showToast("null  mission!");
+                                        }
+                                        //showToast("loadready "+loadready);
+
+                                        try {
+                                            Thread.sleep(3000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+                                            @Override
+                                            public void onResult(DJIError djiError) {
+                                                showToast(djiError != null ? djiError.getDescription() : "start mission success");
+                                            }
+                                        });
+//                               waypointMissionOperator.destroy();
+//                                    try {
+//                                        Thread.sleep(6000);
+//                                    } catch (InterruptedException e) {
+//                                        e.printStackTrace();
+//                                    }
+
+
+//                                waypointMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
+//                                    @Override
+//                                    public void onResult(DJIError djiError) {
+//                                        showToast(djiError.getDescription());
+//                                    }
+//                                });
+//                                waypointMissionOperator.destroy();
+//                                    // 14. 降落
+//                                    flightController.startLanding(new CommonCallbacks.CompletionCallback() {
+//                                        @Override
+//                                        public void onResult(DJIError djiError) {
+//                                            if (null != djiError)
+//                                                showToast(djiError.getDescription());
+//                                        }
+//                                    });
+//                                }
+                                    } else {
+                                        showToast("FlightControllerCurrent Error");
+                                    }
+                                } else {
+                                    showToast("AircraftConnectedCurrent Error");
+                                }
+                            }
+                        }).start();
+
+                    }
+                });
+                builder.create().show();
 
                 //保存图像
 //                Bitmap bitmap = fpv.getBitmap();
@@ -238,7 +429,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 int temp = 0;
-                while (true) {
+                //无人机状态
+                int tempp = 0;
+                while (temp == 0) {
                     if (MApplication.isAircraftConnected() && temp == 0) {
                         BaseProduct product = MApplication.getProductInstance();
                         if (product != null) {
@@ -257,331 +450,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-        //2.通信初始化
-        showToast("tcp link");
-        tcp_ip_link.sharedCenter().connect(IP_Address, port);
-        tcp_ip_link.sharedCenter().setReceivedCallback(new tcp_ip_link.OnReceiveCallbackBlock() {
-            @Override
-            public void callback(String receicedMessage) {
-                if (receicedMessage.contains("GPS")) {
-                    String str_car_Latitude = receicedMessage.split(" ")[1];
-                    String str_car_Longitude = receicedMessage.split(" ")[2];
-                    car_Latitude = Float.parseFloat(str_car_Latitude);
-                    car_Longitude = Float.parseFloat(str_car_Longitude);
-                    if (car_Updata == 0) {
-                        car_Updata = 1;
-                    }
-                }
-            }
-        });
-        showToast("tcp link end");
-
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* FlyingTask flyingTask = new FlyingTask(MainActivity.this);
-                FlyingTask.FlyTask flyTask = flyingTask.new FlyTask();
-                flyTask.start();*/
 
-//                Intent intent = new Intent(MainActivity.this,InputActivity.class);
-//                startActivityForResult(intent,1);
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        //1.云台向下
-                        Rotation.Builder builder = new Rotation.Builder().mode(RotationMode.ABSOLUTE_ANGLE).time(2);
-                        builder.pitch((float) (-90.0));
-                        sendRotateGimbalCommand(builder.build());
-                        builder.yaw((float) (0));
-                        sendRotateGimbalCommand(builder.build());
-                        builder.roll((float) (0));
-                        sendRotateGimbalCommand(builder.build());
-
-                        //3.飞行实例获取
-                        if (MApplication.isAircraftConnected()) {
-                            if (ModuleVerificationUtil.isFlightControllerAvailable()) {
-                                FlightController flightController =
-                                        ((Aircraft) MApplication.getProductInstance()).getFlightController();
-
-                                //4.mission任务初始化
-                                while (waypointMissionOperator == null) {
-                                    waypointMissionOperator = MissionControl.getInstance().getWaypointMissionOperator();
-                                    if (waypointMissionOperator == null)
-                                        showToast("start init waypointOperator");
-                                }
-
-                                //5.无人机状态
-                                flightController.setStateCallback(new FlightControllerState.Callback() {
-                                    @Override
-                                    public void onUpdate(@NonNull FlightControllerState flightControllerState) {
-                                        nowLatitude = flightControllerState.getAircraftLocation().getLatitude();
-                                        nowLongitude = flightControllerState.getAircraftLocation().getLongitude();
-                                        nowAltitude = flightControllerState.getAircraftLocation().getAltitude();
-                                        flightState = flightControllerState.getFlightMode();
-
-                                    }
-                                });
-
-                                // 6. 起飞
-                                flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
-                                    @Override
-                                    public void onResult(DJIError djiError) {
-                                        if (null != djiError)
-                                            showToast(djiError.getDescription());
-                                    }
-                                });
-
-                                //7.启动二维码检测线程
-                                HandlerThread thread = new HandlerThread("arucoThread");
-                                thread.start();
-                                mHandler = new Handler(thread.getLooper());
-                                mHandler.post(mArucoDetectRunnable);
-
-                                //8.waypoint执行
-                                while (app.getPoints()[0] == 5000) {
-                                    waypointMissionOperator.clearMission();
-                                    if (car_Updata == 1) {
-                                        car_Updata = 0;
-                                        //showToast("car_Latitude: "+car_Latitude+" car_Longitude "+car_Longitude);
-//                                waypointMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
-//                                    @Override
-//                                    public void onResult(DJIError djiError) {
-//                                        showToast(djiError.getDescription());
-//                                    }
-//                                });
-                                        mission = createWaypointMission(car_Latitude, car_Longitude, 6);
-//                              mission = createRandomWaypointMission(1,1);
-
-                                        if (mission != null) {
-                                            DJIError djiError = waypointMissionOperator.loadMission(mission);
-                                            if (WaypointMissionState.READY_TO_RETRY_UPLOAD.equals(waypointMissionOperator.getCurrentState())
-                                                    || WaypointMissionState.READY_TO_UPLOAD.equals(waypointMissionOperator.getCurrentState())) {
-
-                                                waypointMissionOperator.uploadMission(new CommonCallbacks.CompletionCallback() {
-                                                    @Override
-                                                    public void onResult(DJIError djiError) {
-                                                        if (djiError == null) {
-                                                            loadready = 1;
-                                                        } else {
-                                                            showToast(djiError.getDescription());
-                                                        }
-                                                    }
-                                                });
-                                            } else {
-                                                //showToast("Not ready!");
-                                                loadready = 0;
-                                            }
-                                            if (loadready == 1 && mission != null) {
-                                                try {
-                                                    Thread.sleep(3000);
-                                                } catch (InterruptedException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        } else {
-                                            //showToast("null  mission!");
-                                        }
-                                        //showToast("loadready "+loadready);
-                                        if (loadready == 1) {
-                                            if (mission != null) {
-                                                waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
-                                                    @Override
-                                                    public void onResult(DJIError djiError) {
-                                                        showToast(djiError.getDescription());
-                                                    }
-                                                });
-                                            } else {
-                                                showToast("Prepare Mission First!");
-                                            }
-//                                            waypointMissionOperator.destroy();
-
-
-//                                    try {
-//                                        Thread.sleep(6000);
-//                                    } catch (InterruptedException e) {
-//                                        e.printStackTrace();
-//                                    }
-                                        }
-                                    }
-                                }
-                                waypointMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
-                                    @Override
-                                    public void onResult(DJIError djiError) {
-                                        showToast(djiError.getDescription());
-                                    }
-                                });
-                                waypointMissionOperator.destroy();
-
-                                // 9. 设置启动虚拟摇杆模式
-                                temp = false;
-                                while (temp != true) {
-                                    flightController.setVirtualStickModeEnabled(true, new CommonCallbacks.CompletionCallback() {
-                                        @Override
-                                        public void onResult(DJIError djiError) {
-                                            if (null != djiError)
-                                                showToast(djiError.getDescription());
-                                        }
-                                    });
-
-
-                                    flightController.getVirtualStickModeEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
-                                        @Override
-                                        public void onSuccess(Boolean aBoolean) {
-                                            temp = aBoolean;
-                                            if (aBoolean == true)
-                                                showToast("VirtualStickMode is" + aBoolean);
-                                        }
-
-                                        @Override
-                                        public void onFailure(DJIError djiError) {
-                                            if (null != djiError)
-                                                showToast(djiError.getDescription());
-                                        }
-                                    });
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                // 10. 设置飞行模式
-                                setFilghtMode(flightController);
-//                                // 停 5 s
-//                                try {
-//                                    Thread.sleep(5000);
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-
-                                // 11. 初始化 TimerTask 和 Timer
-                                SendControlDataTask task = new SendControlDataTask(flightController);
-                                setControlData(0, 0, 0, 0, task);
-                                Timer timer = new Timer();
-                                timer.schedule(task, 0, 30);
-                                // 12. 寻找二维码并矫正位置并居中
-                                try {
-                                    showToast("Starting Task");
-                                    //showToast(Double.toString(nowAltitude));
-                                    float[] points;
-                                    float[] control = {0, 0, 0};
-                                    int count = 0;
-                                    int temp = 0;
-                                    boolean visualSticktmp = false;
-                                    DJIError tmperror;
-                                    setControlData(0, 0, 0, 0, task);
-                                    while (count < 20) {
-                                        points = app.getPoints();
-                                        if (flightController.isVirtualStickControlModeAvailable()) {
-                                            visualSticktmp = true;
-                                        } else {
-                                            visualSticktmp = false;
-                                        }
-                                        if (temp == 8) {
-                                            showToast(Float.toString(points[0]) + " " + Float.toString(points[1]) + " ControlMode:" + Boolean.toString(visualSticktmp));
-                                            if (task.getDjiError() != null) {
-                                                tmperror = task.getDjiError();
-                                                showToast(tmperror.getDescription());
-                                            }
-                                            temp = 0;
-                                        }
-                                        temp++;
-
-                                        if ((int) points[0] == 5000 || (int) points[0] == 6000) {
-                                            setControlData(0, 0, 0, 0, task);
-                                        } else {
-                                            //y
-                                            if (points[1] > 300) {
-                                                control[1] = (float) -0.1;
-                                            } else if (points[1] < -300) {
-                                                control[1] = (float) 0.1;
-                                            } else if (points[1] > 0 && points[1] <= 300) {
-                                                control[1] = (float) -0.1;
-                                            } else if (points[1] < 0 && points[1] >= -300) {
-                                                control[1] = (float) 0.1;
-                                            } else {
-                                                control[1] = 0;
-                                            }
-
-                                            //x
-                                            if (points[0] > 200) {
-                                                control[0] = (float) 0.1;
-                                            } else if (points[0] < -200) {
-                                                control[0] = (float) -0.1;
-                                            } else if (points[0] > 0 && points[0] <= 200) {
-                                                control[0] = (float) 0.1;
-                                            } else if (points[0] < 0 && points[0] >= -200) {
-                                                control[0] = (float) -0.1;
-                                            } else {
-                                                control[0] = 0;
-                                            }
-
-                                            if (nowAltitude > 1.6) {
-                                                control[2] = (float) -0.1;
-                                            } else {
-                                                control[2] = 0;
-                                            }
-
-                                            setControlData(control[0], control[1], 0, control[2], task);
-                                            if (points[0] < 100 && points[1] < 100 && nowAltitude < 1.8) {
-                                                count++;
-                                            } else {
-                                                count = 0;
-                                            }
-
-                                        }
-                                        Thread.sleep(300);
-                                    }
-//                                    showToast("Starting Task");
-//                                    setControlData(0,1,0,0, task);
-//                                    Thread.sleep(5000);
-//                                    setControlData(0,0,0,0, task);
-//                                    Thread.sleep(1000);
-//
-//                                    setControlData(1,0,0,0, task);
-//                                    Thread.sleep(3000);
-//                                    setControlData(0,0,0,0, task);
-//                                    Thread.sleep(1000);
-//
-//                                    setControlData(0,-1,0,0, task);
-//                                    Thread.sleep(5000);
-//                                    setControlData(0,0,0,0, task);
-//                                    Thread.sleep(1000);
-//
-//                                    setControlData(-1,0,0,0, task);
-//                                    Thread.sleep(3000);
-//                                    setControlData(0,0,0,0, task);
-//                                    Thread.sleep(1000);
-                                } catch (Exception e) {
-                                    showToast(e.getMessage());
-                                } finally {
-                                    // 13. 删除 Timer 线程
-                                    timer.cancel();
-                                    timer.purge();
-                                    timer = null;
-                                    task = null;
-                                    // 14. 降落
-                                    flightController.startLanding(new CommonCallbacks.CompletionCallback() {
-                                        @Override
-                                        public void onResult(DJIError djiError) {
-                                            if (null != djiError)
-                                                showToast(djiError.getDescription());
-                                        }
-                                    });
-
-                                    //15.销毁二维码识别
-                                    mHandler.removeCallbacks(mArucoDetectRunnable);
-                                }
-                            } else {
-                                showToast("FlightControllerCurrent Error");
-                            }
-                        } else {
-                            showToast("AircraftConnectedCurrent Error");
-                        }
-                    }
-                }).start();
             }
         });
 
@@ -709,27 +581,47 @@ public class MainActivity extends AppCompatActivity {
 
     private WaypointMission createWaypointMission(double to_Latitude, double to_Longitude, float to_height) {
         WaypointMission.Builder builder = new WaypointMission.Builder();
-
         builder.autoFlightSpeed(5f);
         builder.maxFlightSpeed(10f);
         builder.setExitMissionOnRCSignalLostEnabled(false);
-        builder.finishedAction(WaypointMissionFinishedAction.NO_ACTION);
         builder.flightPathMode(WaypointMissionFlightPathMode.NORMAL);
         builder.gotoFirstWaypointMode(WaypointMissionGotoWaypointMode.SAFELY);
         builder.headingMode(WaypointMissionHeadingMode.AUTO);
         builder.repeatTimes(1);
+        builder.finishedAction(WaypointMissionFinishedAction.GO_HOME);
+
+        double baseLatitude = 22;
+        double baseLongitude = 113;
+        Object latitudeValue = KeyManager.getInstance().getValue((FlightControllerKey.create(HOME_LOCATION_LATITUDE)));
+        Object longitudeValue =
+                KeyManager.getInstance().getValue((FlightControllerKey.create(HOME_LOCATION_LONGITUDE)));
+        if (latitudeValue != null && latitudeValue instanceof Double) {
+            baseLatitude = (double) latitudeValue;
+        }
+        if (longitudeValue != null && longitudeValue instanceof Double) {
+            baseLongitude = (double) longitudeValue;
+        }
 
         List<Waypoint> waypointList = new ArrayList<>();
-        final Waypoint eachWaypoint0 = new Waypoint(nowLatitude, nowLongitude, (float) nowAltitude);
+        Waypoint eachWaypoint0 = new Waypoint(baseLatitude, baseLongitude, (float) aimAltitude);
         eachWaypoint0.addAction(new WaypointAction(WaypointActionType.STAY, 1));
         waypointList.add(eachWaypoint0);
-        final Waypoint eachWaypoint1 = new Waypoint(to_Latitude, to_Longitude, to_height);
+
+        final double v = (Math.floor(1 / 4) + 1) * 2 * ONE_METER_OFFSET * Math.pow(-1, 1) * Math.pow(0, 1 % 2);
+//        Waypoint eachWaypoint1 = new Waypoint(baseLatitude+30*ONE_METER_OFFSET,
+//                baseLongitude,
+//                15f);
+
+        Waypoint eachWaypoint1 = new Waypoint(baseLatitude + to_Latitude * ONE_METER_OFFSET,
+                baseLongitude + to_Longitude * ONE_METER_OFFSET,
+                (float) to_height);
         eachWaypoint1.addAction(new WaypointAction(WaypointActionType.STAY, 1));
         waypointList.add(eachWaypoint1);
 
 
         builder.waypointList(waypointList).waypointCount(waypointList.size());
-        //showToast("waypointCount "+ waypointList.size());
+//        showToast("baseLatiyude:"+Double.toString(baseLatitude));
+//        showToast("aimLatitude:"+Double.toString(aimLatitude));
         return builder.build();
     }
 

@@ -1,0 +1,47 @@
+{
+  "stringTable": {
+    "0": "D:/Project/AndroidProject/UXSDKDemo/app/.cxx/cmake/release/arm64-v8a",
+    "1": "--target=aarch64-none-linux-android21 --gcc-toolchain=D:/AndroidSDK/ndk/23.0.7344513/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/AndroidSDK/ndk/23.0.7344513/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dnative_lib_EXPORTS -ID:/Project/AndroidProject/UXSDKDemo/app/src/main/cpp/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++11 -std=gnu++11 -O2 -DNDEBUG -fPIC"
+  },
+  "buildFiles": [
+    "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\src\\main\\cpp\\CMakeLists.txt",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\android.toolchain.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\android-legacy.toolchain.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\platforms.cmake",
+    "D:\\AndroidSDK\\ndk\\23.0.7344513\\build\\cmake\\compiler_id.cmake"
+  ],
+  "cleanCommands": [
+    "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\release\\arm64-v8a\" clean"
+  ],
+  "buildTargetsCommand": "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\release\\arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "native-lib-Release-arm64-v8a": {
+      "buildCommand": "D:\\AndroidSDK\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\Project\\AndroidProject\\UXSDKDemo\\app\\.cxx\\cmake\\release\\arm64-v8a\" native-lib",
+      "buildType": "release",
+      "toolchain": "802966327",
+      "abi": "arm64-v8a",
+      "artifactName": "native-lib",
+      "files": [
+        {
+          "src": "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\src\\main\\cpp\\native-lib.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\build\\intermediates\\cmake\\release\\obj\\arm64-v8a\\libnative-lib.so",
+      "runtimeFiles": [
+        "D:\\Project\\AndroidProject\\UXSDKDemo\\app\\libs\\arm64-v8a\\libopencv_java3.so"
+      ]
+    }
+  },
+  "toolchains": {
+    "802966327": {
+      "cppCompilerExecutable": "D:\\AndroidSDK\\ndk\\23.0.7344513\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

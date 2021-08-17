@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/UXSDKDemo.iml" filepath="$PROJECT_DIR$/.idea/UXSDKDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/UXSDKDemo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/UXSDKDemo.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/cvsdk/UXSDKDemo.cvsdk.iml" filepath="$PROJECT_DIR$/.idea/modules/cvsdk/UXSDKDemo.cvsdk.iml" />
     </modules>
   </component>
 </project>

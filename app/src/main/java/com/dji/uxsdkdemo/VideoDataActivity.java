@@ -20,12 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
@@ -40,12 +34,7 @@ import dji.sdk.camera.VideoFeeder;
 import dji.sdk.codec.DJICodecManager;
 import dji.sdk.sdkmanager.DJISDKManager;
 
-import org.opencv.aruco.*;
-import org.opencv.core.MatOfInt;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgproc.Imgproc;
+
 
 public class VideoDataActivity extends AppCompatActivity {
     static {
@@ -69,7 +58,6 @@ public class VideoDataActivity extends AppCompatActivity {
     private boolean isPrimaryVideoFeed;
     private Button button;
     String str = new String();
-    private Mat resMat, src;
     boolean resT;
     int width, height;
 
@@ -85,21 +73,21 @@ public class VideoDataActivity extends AppCompatActivity {
     }
 
 
-    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("opencv", "OpenCV loaded successfully");
-                    break;
-                }
-                default: {
-                    super.onManagerConnected(status);
-                    break;
-                }
-            }
-        }
-    };
+//    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+//        @Override
+//        public void onManagerConnected(int status) {
+//            switch (status) {
+//                case LoaderCallbackInterface.SUCCESS: {
+//                    Log.i("opencv", "OpenCV loaded successfully");
+//                    break;
+//                }
+//                default: {
+//                    super.onManagerConnected(status);
+//                    break;
+//                }
+//            }
+//        }
+//    };
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -190,13 +178,13 @@ public class VideoDataActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
+//        if (!OpenCVLoader.initDebug()) {
+//            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+//            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+//        } else {
+//            Log.d(TAG, "OpenCV library found inside package. Using it!");
+//            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+//        }
     }
 
 
