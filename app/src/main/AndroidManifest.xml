@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dji.uxsdkdemo">
+
     <!-- DJI SDK need permission -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -31,11 +32,22 @@
         android:name=".MApplication"
         android:allowBackup="true"
         android:icon="@mipmap/my_icon"
-        android:roundIcon="@mipmap/my_icon_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/my_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".RTMPService"
+            android:enabled="true"
+            android:exported="true"></service>
 
+        <activity android:name=".Setting">
+            <intent-filter>
+                <action android:name="android.intent.action.Input" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".VideoDataActivity" /> <!-- DJI SDK -->
         <uses-library android:name="com.android.future.usb.accessory" />
         <uses-library

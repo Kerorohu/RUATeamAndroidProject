@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,33 +84,9 @@ import static dji.keysdk.FlightControllerKey.HOME_LOCATION_LONGITUDE;
 
 public class MainActivity extends AppCompatActivity {
     private static final double ONE_METER_OFFSET = 0.00000899322;
-//    static {
-//        System.loadLibrary("native-lib");
-//    }
 
     private Handler mHandler;
     private boolean mRunning = true;
-
-//    Runnable mArucoDetectRunnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            while (mRunning) {
-//                bitmap = fpv.getBitmap();
-//                if (bitmap != null) {
-//                    float[] points = calibratePoint(bitmap, bitmap.getWidth(), bitmap.getHeight());
-//                    app.setPoints(points);
-//                }
-//
-//                try {
-//                    Thread.sleep(300);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//            //bitmap.recycle();
-//        }
-//    };
 
     private Compass compass;
     private WaypointMissionOperator waypointMissionOperator;
@@ -128,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private int count;
 
-    //private native void cameraCalibrate(Bitmap[] bmps,long rvecs,long tvecs);
-    //private native float[] calibratePoint(Bitmap input, int width, int height);
+
 
     //xiaoweigeCode
     protected double nowLatitude;
@@ -178,6 +154,69 @@ public class MainActivity extends AppCompatActivity {
         Button btn = (Button) findViewById(R.id.start);
         Button cc = (Button) findViewById(R.id.saveImg);
 //        Button cca = (Button) findViewById(R.id.c_calibration);
+        SlideButton RTMPButton = findViewById(R.id.RTMPButton);
+        RTMPButton.setBigCircleModel(Color.parseColor("#cccccc"), Color.parseColor("#00000000"), Color.parseColor("#FF4040"), Color.parseColor("#cccccc"), Color.parseColor("#cccccc"));
+        RTMPButton.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
+            @Override
+            public void onCheckedChangeListener(boolean isChecked) {
+                if (isChecked) {
+                    //打开直播流
+                    liveShowUrl = "rtmp://192.168.1.97:1935/live/home";
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (!MApplication.isAircraftConnected() || !isLiveStreamManagerOn()) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            if (isLiveStreamManagerOn()) {
+                                listener = new LiveStreamManager.OnLiveChangeListener() {
+                                    @Override
+                                    public void onStatusChanged(int i) {
+                                        //showToast("status changed : " + i);
+                                    }
+                                };
+                                DJISDKManager.getInstance().getLiveStreamManager().registerListener(listener);
+                            }
+                            if (MApplication.isAircraftConnected()) {
+                                if (isLiveStreamManagerOn()) {
+                                    if (DJISDKManager.getInstance().getLiveStreamManager().isStreaming()) {
+                                        showToast("livestream already started!");
+                                    } else {
+                                        DJISDKManager.getInstance().getLiveStreamManager().setLiveUrl(liveShowUrl);
+                                        DJISDKManager.getInstance().getLiveStreamManager().setAudioStreamingEnabled(false);
+                                        int result = DJISDKManager.getInstance().getLiveStreamManager().startStream();
+                                        showToast(result == 0 ? "livestream start success" : "error code: " + result);
+                                        DJISDKManager.getInstance().getLiveStreamManager().setStartTime();
+
+                                        ToastUtils.setResultToToast("startLive:" + result +
+                                                "\n isVideoStreamSpeedConfigurable:" + DJISDKManager.getInstance().getLiveStreamManager().isVideoStreamSpeedConfigurable() +
+                                                "\n isLiveAudioEnabled:" + DJISDKManager.getInstance().getLiveStreamManager().isLiveAudioEnabled());
+                                    }
+                                } else {
+                                    showToast("onStreamError!");
+                                }
+                            } else {
+                                showToast("AircraftconnectedCurrent Error");
+                            }
+
+                        }
+                    }).start();
+                } else {
+                    //关闭直播流
+                    if (!isLiveStreamManagerOn()) {
+                        return;
+                    }
+                    DJISDKManager.getInstance().getLiveStreamManager().stopStream();
+                    ToastUtils.setResultToToast("Stop Live Show");
+                }
+            }
+        });
+
         fpv = (TextureView) findViewById(R.id.fpvWidget);
         bitmaps = new Bitmap[10];
         count = 0;
@@ -196,16 +235,6 @@ public class MainActivity extends AppCompatActivity {
         car_Longitude = 0;
         car_Updata = 0;
         loadready = 0;
-
-//        listener = new LiveStreamManager.OnLiveChangeListener() {
-//            @Override
-//            public void onStatusChanged(int i) {
-//                showToast("status changed : " + i);
-//            }
-//        };
-
-        //showToast(stringFromJNI());
-        liveShowUrl = "rtmp://192.168.1.117:1935/live/home";
 
         cc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -441,7 +470,7 @@ public class MainActivity extends AppCompatActivity {
                                 gimbal = product.getGimbal();
                             }
                             temp = 1;
-                            showToast("Ok:gimbal");
+                            //showToast("Ok:gimbal");
                         } else {
                             showToast("fail:gimbal");
                         }
@@ -457,34 +486,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        //直播流服务
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while (!MApplication.isAircraftConnected() || !isLiveStreamManagerOn()) {}
-//                if (MApplication.isAircraftConnected()) {
-//                    if (isLiveStreamManagerOn()) {
-//                        if (DJISDKManager.getInstance().getLiveStreamManager().isStreaming()) {
-//                            showToast("already started!");
-//                        } else {
-//                            DJISDKManager.getInstance().getLiveStreamManager().setLiveUrl(liveShowUrl);
-//                            int result = DJISDKManager.getInstance().getLiveStreamManager().startStream();
-//                            DJISDKManager.getInstance().getLiveStreamManager().setStartTime();
-//                            if (isLiveStreamManagerOn()) {
-//                                DJISDKManager.getInstance().getLiveStreamManager().registerListener(listener);
-//                            }
-//                            ToastUtils.setResultToToast("startLive:" + result +
-//                                    "\n isVideoStreamSpeedConfigurable:" + DJISDKManager.getInstance().getLiveStreamManager().isVideoStreamSpeedConfigurable() +
-//                                    "\n isLiveAudioEnabled:" + DJISDKManager.getInstance().getLiveStreamManager().isLiveAudioEnabled());
-//                        }
-//                    } else {
-//                        //showToast("onStreamError!");
-//                    }
-//                } else {
-//                    //showToast("AircraftconnectedCurrent Error");
-//                }
-//            }
-//        }).start();
+//        Intent startRTMPService = new Intent(this, com.dji.uxsdkdemo.RTMPService.class);
+//        startService(startRTMPService);
+
+        //直播流服务
+
 //        try {
 //            Thread.sleep(1000);
 //        } catch (InterruptedException e) {
@@ -634,6 +640,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     private void videoDataTest(byte[] bytes, int size) {

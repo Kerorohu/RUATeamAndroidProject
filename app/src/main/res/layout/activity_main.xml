@@ -121,41 +121,63 @@
             android:layout_height="30dp" />
     </LinearLayout>
 
+<!--    自定义功能按钮-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/mission"
-        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:background="@color/dark_gray"
-        android:layout_marginTop="50dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="500dp"
+        android:layout_marginBottom="10dp">
 
         <Button
             android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             tools:ignore="RtlHardcoded"
             android:text="Start"
-            style="?android:attr/buttonStyleSmall" />
+            android:gravity="center"
+            android:background="@drawable/btn_bg_black"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp" />
+
+        <Button
+            android:id="@+id/c_calibration"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            tools:ignore="RtlHardcoded"
+            android:text="cc"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_bg_black" />
 
         <Button
             android:id="@+id/saveImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            tools:ignore="RtlHardcoded"
+            android:text=" text"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_bg_black" />
+
+        <TextView
+            android:id="@+id/RTMPText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            tools:ignore="RtlHardcoded"
-            android:text="SaveImg"
-            style="?android:attr/buttonStyleSmall" />
+            android:gravity="center"
+            android:text="RTMP:"
+            android:textColor="@color/white" />
 
-        <!--        <Button-->
-        <!--            android:id="@+id/c_calibration"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_alignParentRight="true"-->
-        <!--            tools:ignore="RtlHardcoded"-->
-        <!--            android:layout_marginTop="20dp"-->
-        <!--            android:text="calibrateCamera" />-->
+        <com.dji.uxsdkdemo.SlideButton
+            android:id="@+id/RTMPButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp" />
 
     </LinearLayout>
 

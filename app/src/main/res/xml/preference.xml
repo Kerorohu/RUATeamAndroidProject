@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="setting">
+    <PreferenceCategory android:title="航点飞行设置">
+        <Preference
+            android:key="option11"
+            android:summary="这是选项1"
+            android:title="点我" />
+
+        <EditTextPreference
+            android:key="option12"
+            android:summary="这是选项2"
+            android:title="名称" />
+
+        <SwitchPreference
+            android:checked="true"
+            android:key="option13"
+            android:summary="这是选项3"
+            android:summaryOff="关闭选项3"
+            android:summaryOn="开启选项3"
+            android:title="通知栏常驻" />
+
+        <RingtonePreference
+            android:key="option14"
+            android:summary="这是选项4"
+            android:title="打开" />
+        <CheckBoxPreference
+            android:key="option15"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="QQ选项"
+            android:summaryOff="禁止QQ"
+            android:summaryOn="允许QQ"
+            android:title="QQ弹窗" />
+        <CheckBoxPreference
+            android:dependency="option15"
+            android:key="option20"
+            android:summary="微信选项"
+            android:summaryOff="禁止微信"
+            android:summaryOn="允许微信"
+            android:title="微信弹窗" />
+        <CheckBoxPreference
+            android:checked="true"
+            android:key="option16"
+            android:summary="微博选项"
+            android:summaryOff="禁止微博"
+            android:summaryOn="允许我播"
+            android:title="微博弹窗" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="复合选项">
+
+
+        <PreferenceScreen
+            android:key="option19"
+            android:summary="打开我的博客"
+            android:title="我的博客">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://august1996.top" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+</PreferenceScreen>
