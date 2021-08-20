@@ -1,0 +1,50 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="hotpoint_heading_values">
+        <item>ALONG_CIRCLE_LOOKING_FORWARDS</item>
+        <item>ALONG_CIRCLE_LOOKING_BACKWARDS</item>
+        <item>TOWARDS_HOT_POINT</item>
+        <item>AWAY_FROM_HOT_POINT</item>
+        <item>CONTROLLED_BY_REMOTE_CONTROLLER</item>
+        <item>USING_INITIAL_HEADING</item>
+    </string-array>
+
+    <string-array name="hotpoint_heading">
+        <item>沿着圆形路径前进的方向</item>
+        <item>沿着圆形路径向后的方向</item>
+        <item>朝向热点</item>
+        <item>从热点到飞机定义的向量的方向上</item>
+        <item>由遥控器控制</item>
+        <item>与任务开始时飞机的航向保持一致</item>
+    </string-array>
+
+    <string-array name="waypoint_flight_path_values">
+        <item>NORMAL</item>
+        <item>CURVED</item>
+    </string-array>
+
+    <string-array name="waypoint_heading_mode_values">
+        <item>AUTO</item>
+        <item>USING_INITIAL_DIRECTION</item>
+        <item>CONTROL_BY_REMOTE_CONTROLLER</item>
+        <item>TOWARD_POINT_OF_INTEREST</item>
+    </string-array>
+
+    <string-array name="waypoint_heading_mode">
+        <item>与飞行方向一致</item>
+        <item>为到达第一个航路点时的航向</item>
+        <item>由遥控器控制</item>
+        <item>朝向兴趣点</item>
+    </string-array>
+
+</resources>

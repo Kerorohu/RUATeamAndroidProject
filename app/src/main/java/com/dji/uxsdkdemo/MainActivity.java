@@ -2,26 +2,21 @@ package com.dji.uxsdkdemo;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,12 +24,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import dji.common.airlink.PhysicalSource;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.flightcontroller.FlightMode;
 import dji.common.gimbal.Rotation;
-import dji.common.gimbal.RotationMode;
+import dji.common.mission.hotpoint.HotpointHeading;
+import dji.common.mission.hotpoint.HotpointMission;
 import dji.common.mission.waypoint.Waypoint;
 import dji.common.mission.waypoint.WaypointAction;
 import dji.common.mission.waypoint.WaypointActionType;
@@ -44,29 +39,25 @@ import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
 import dji.common.mission.waypoint.WaypointMissionGotoWaypointMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionState;
-import dji.common.product.Model;
+import dji.common.model.LocationCoordinate2D;
 import dji.common.util.CommonCallbacks;
 import dji.keysdk.FlightControllerKey;
 import dji.keysdk.KeyManager;
 import dji.sdk.camera.*;
-import dji.common.flightcontroller.ObstacleDetectionSector;
-import dji.common.flightcontroller.VisionDetectionState;
-import dji.common.flightcontroller.VisionSensorPosition;
 import dji.common.flightcontroller.virtualstick.FlightCoordinateSystem;
 import dji.common.flightcontroller.virtualstick.RollPitchControlMode;
 import dji.common.flightcontroller.virtualstick.VerticalControlMode;
 import dji.common.flightcontroller.virtualstick.YawControlMode;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.flightcontroller.Compass;
-import dji.sdk.flightcontroller.FlightAssistant;
 import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.gimbal.Gimbal;
 import dji.sdk.mission.MissionControl;
+import dji.sdk.mission.hotpoint.HotpointMissionOperator;
 import dji.sdk.mission.waypoint.WaypointMissionOperator;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.sdkmanager.LiveStreamManager;
-import dji.sdksharedlib.DJISDKCache;
 
 //import org.opencv.android.OpenCVLoader;
 //import org.opencv.core.Mat;
@@ -77,7 +68,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import static dji.keysdk.FlightControllerKey.HOME_LOCATION_LATITUDE;
 import static dji.keysdk.FlightControllerKey.HOME_LOCATION_LONGITUDE;
@@ -91,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private Compass compass;
     private WaypointMissionOperator waypointMissionOperator;
     private WaypointMission mission;
+    private HotpointMission hotpointMission;
     private static final String TAG = MainActivity.class.getName();
     private LiveStreamManager.OnLiveChangeListener listener;
     private VideoFeeder.VideoDataListener videoDataListener;
@@ -106,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
     private int count;
 
 
-
     //xiaoweigeCode
     protected double nowLatitude;
     protected double nowLongitude;
@@ -114,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
     protected double aimLatitude = 0;
     protected double aimLongitude = 0;
     protected double aimAltitude = 0;
+    protected double hotLatitude = 0;
+    protected double hotLongitude = 0;
+    protected double hotAltitude = 0;
     protected FlightMode flightState;
     protected String IP_Address;
     protected int port;
@@ -122,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     double car_Updata;
     int loadready = 0;
     private FlightController flightController;
+    private HotpointMissionOperator hotpointMissionOperator;
 
     Boolean temp;
     byte[] bytes;
@@ -153,8 +147,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button btn = (Button) findViewById(R.id.start);
         Button cc = (Button) findViewById(R.id.saveImg);
-//        Button cca = (Button) findViewById(R.id.c_calibration);
+        Button cca = (Button) findViewById(R.id.c_calibration);
+        Button setting = (Button) findViewById(R.id.setting);
         SlideButton RTMPButton = findViewById(R.id.RTMPButton);
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TO-DO
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         RTMPButton.setBigCircleModel(Color.parseColor("#cccccc"), Color.parseColor("#00000000"), Color.parseColor("#FF4040"), Color.parseColor("#cccccc"), Color.parseColor("#cccccc"));
         RTMPButton.setOnCheckedListener(new SlideButton.SlideButtonOnCheckedListener() {
             @Override
@@ -236,6 +241,116 @@ public class MainActivity extends AppCompatActivity {
         car_Updata = 0;
         loadready = 0;
 
+        //热点环绕任务
+        cca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                View view2 = View.inflate(MainActivity.this, R.layout.input, null);
+                final EditText lon = (EditText) view2.findViewById(R.id.username);
+                final EditText lat = (EditText) view2.findViewById(R.id.password);
+                final EditText alt = (EditText) view2.findViewById(R.id.alt);
+                lon.setText(Double.toString(hotLongitude));
+                lat.setText(Double.toString(hotLatitude));
+                alt.setText(Double.toString(hotAltitude));
+                builder.setTitle("Input").setIcon(R.drawable.ic_access_locker_info).setView(view2).setNegativeButton("取消", null);
+                builder.setCancelable(true);
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String tlon = lon.getText().toString().trim();
+                        String tlat = lat.getText().toString().trim();
+                        String talt = alt.getText().toString().trim();
+                        Double dlon;
+                        Double dlat;
+                        Double dalt;
+                        try {
+                            dlon = Double.valueOf(tlon);
+                            dlat = Double.valueOf(tlat);
+                            dalt = Double.valueOf(talt);
+                            hotLatitude = dlat;
+                            hotLongitude = dlon;
+                            hotAltitude = dalt;
+                        } catch (NumberFormatException e) {
+                            showToast("输入数据有误");
+                        }
+
+                        if (MApplication.isAircraftConnected()) {
+                            if (ModuleVerificationUtil.isFlightControllerAvailable()) {
+                                if (flightController == null)
+                                    flightController =
+                                            ((Aircraft) MApplication.getProductInstance()).getFlightController();
+
+                                //4.missionoperator任务初始化
+                                while (hotpointMissionOperator == null) {
+                                    hotpointMissionOperator = MissionControl.getInstance().getHotpointMissionOperator();
+                                    if (hotpointMissionOperator == null)
+                                        showToast("start init waypointOperator");
+                                }
+
+                                //6. 起飞
+                                if (nowAltitude < 0.1) {
+                                    flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
+                                        @Override
+                                        public void onResult(DJIError djiError) {
+                                            showToast(djiError == null ? "take off!" : djiError.getDescription());
+                                        }
+                                    });
+
+                                    try {
+                                        Thread.sleep(5000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    showToast("is already fly");
+                                }
+
+                                //创建hotpoint任务
+                                hotpointMission = new HotpointMission();
+                                hotpointMission.setHotpoint(new LocationCoordinate2D(hotLatitude, hotLongitude));
+                                hotpointMission.setHeading(HotpointHeading.TOWARDS_HOT_POINT);
+                                hotpointMission.setAltitude(15);
+                                hotpointMission.setRadius(5);
+                                hotpointMission.setClockwise(true);
+//
+                                if (hotpointMission != null) {
+                                    if (WaypointMissionState.READY_TO_RETRY_UPLOAD.equals(waypointMissionOperator.getCurrentState())
+                                            || WaypointMissionState.READY_TO_UPLOAD.equals(waypointMissionOperator.getCurrentState())) {
+
+                                        hotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
+                                            @Override
+                                            public void onResult(DJIError djiError) {
+                                                ToastUtils.showToast(djiError == null ? "hotpoint mission success" : djiError.getDescription());
+                                            }
+                                        });
+                                    } else {
+                                        showToast("Not ready!");
+                                    }
+
+                                } else {
+                                    //showToast("null  mission!");
+                                }
+                                //showToast("loadready "+loadready);
+
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                showToast("FlightControllerCurrent Error");
+                            }
+                        } else {
+                            showToast("AircraftConnectedCurrent Error");
+                        }
+
+                    }
+                });
+            }
+        });
+
         cc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,6 +372,9 @@ public class MainActivity extends AppCompatActivity {
                 final EditText lon = (EditText) view2.findViewById(R.id.username);
                 final EditText lat = (EditText) view2.findViewById(R.id.password);
                 final EditText alt = (EditText) view2.findViewById(R.id.alt);
+                lon.setText(Double.toString(aimLongitude));
+                lat.setText(Double.toString(aimLatitude));
+                alt.setText(Double.toString(aimAltitude));
                 builder.setTitle("Input").setIcon(R.drawable.ic_access_locker_info).setView(view2).setNegativeButton("取消", null);
                 builder.setCancelable(true);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -295,8 +413,9 @@ public class MainActivity extends AppCompatActivity {
                                 //3.飞行实例获取
                                 if (MApplication.isAircraftConnected()) {
                                     if (ModuleVerificationUtil.isFlightControllerAvailable()) {
-                                        flightController =
-                                                ((Aircraft) MApplication.getProductInstance()).getFlightController();
+                                        if (flightController == null)
+                                            flightController =
+                                                    ((Aircraft) MApplication.getProductInstance()).getFlightController();
 
                                         //4.mission任务初始化
                                         while (waypointMissionOperator == null) {
@@ -482,7 +601,8 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(MainActivity.this, PicDownloadActivity.class);
+                startActivity(intent);
             }
         });
 

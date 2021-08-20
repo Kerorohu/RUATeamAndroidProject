@@ -129,8 +129,19 @@
         android:orientation="horizontal"
         android:background="@color/dark_gray"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="500dp"
+        android:layout_marginLeft="420dp"
         android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:ignore="RtlHardcoded"
+            android:text="Set"
+            android:gravity="center"
+            android:background="@drawable/btn_bg_black"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp" />
 
         <Button
             android:id="@+id/start"
@@ -140,8 +151,7 @@
             android:text="Start"
             android:gravity="center"
             android:background="@drawable/btn_bg_black"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginRight="10dp" />
 
         <Button
             android:id="@+id/c_calibration"
