@@ -26,7 +26,8 @@
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:stretchColumns="0">
 
         </TableLayout>
 
@@ -36,7 +37,7 @@
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="304dp"
+        android:layout_marginEnd="240dp"
         android:layout_marginBottom="8dp"
         android:text="取消"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -58,6 +59,8 @@ public class PicDownloadActivity extends AppCompatActivity {
         cancel = (Button) findViewById(R.id.cancel);
         confirm = (Button) findViewById(R.id.confirm);
 
+        nowPic = new ArrayList<MediaFile>();
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,13 +103,6 @@ public class PicDownloadActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-                if (nowPic.size() > 0) {
-                    for (int i = 0; i < nowPic.size(); i++) {
-                        //addview(nowPic.get(i).getFileName());
-                    }
-                } else {
-                    ToastUtils.showToast("No pic!");
-                }
             } else {
                 ToastUtils.showToast(String.valueOf(R.string.not_support_mediadownload));
             }
@@ -141,7 +137,7 @@ public class PicDownloadActivity extends AppCompatActivity {
                                 getPath() + "/Dji_Pic/");
                         if (!destDir.exists())
                             destDir.mkdir();
-                        mediaFile.fetchFileData(destDir, mediaFile.getFileName(), new DownloadHandler<String>());
+                        mediaFile.fetchFileData(destDir, mediaFile.getFileName().substring(0, mediaFile.getFileName().indexOf(".")), new DownloadHandler<String>());
                     }
                 }
             }
@@ -181,14 +177,21 @@ public class PicDownloadActivity extends AppCompatActivity {
                         if (null == djiError) {
                             List<MediaFile> djiMedias = mediaManager.getSDCardFileListSnapshot();
                             nowPic = djiMedias;
-                            if (null != djiMedias) {
-                                if (!djiMedias.isEmpty()) {
-                                    str = "fetch list success";
-                                    ToastUtils.setResultToToast(str);
-                                } else {
-                                    str = "No Media in SD Card";
-                                    ToastUtils.setResultToToast(str);
+                            if (!nowPic.isEmpty()) {
+                                str = "fetch list success";
+                                ToastUtils.setResultToToast(str);
+                                for (int i = 0; i < nowPic.size(); i++) {
+                                    int finalI = i;
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            addview(nowPic.get(finalI).getFileName());
+                                        }
+                                    });
                                 }
+                            } else {
+                                str = "No Media in SD Card";
+                                ToastUtils.setResultToToast(str);
                             }
                         } else {
                             ToastUtils.setResultToToast(djiError.getDescription());
@@ -205,9 +208,13 @@ public class PicDownloadActivity extends AppCompatActivity {
         RadioButton radioButton = new RadioButton(this);
 
         textView.setText(str);
+        textView.setGravity(Gravity.CENTER);
+
+        radioButton.setGravity(Gravity.CENTER);
 
         tableRow.addView(textView);
         tableRow.addView(radioButton);
+
 
         tableLayout.addView(tableRow);
     }
