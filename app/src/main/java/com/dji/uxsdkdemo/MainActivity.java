@@ -27,9 +27,14 @@ import androidx.core.app.ActivityCompat;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.flightcontroller.FlightMode;
+import dji.common.flightcontroller.flightassistant.IntelligentHotpointMissionMode;
 import dji.common.gimbal.Rotation;
 import dji.common.mission.hotpoint.HotpointHeading;
 import dji.common.mission.hotpoint.HotpointMission;
+import dji.common.mission.hotpoint.HotpointMissionState;
+import dji.common.mission.hotpoint.HotpointStartPoint;
+import dji.common.mission.intelligenthotpoint.IntelligentHotpointMission;
+import dji.common.mission.intelligenthotpoint.IntelligentHotpointMissionState;
 import dji.common.mission.waypoint.Waypoint;
 import dji.common.mission.waypoint.WaypointAction;
 import dji.common.mission.waypoint.WaypointActionType;
@@ -54,6 +59,7 @@ import dji.sdk.flightcontroller.FlightController;
 import dji.sdk.gimbal.Gimbal;
 import dji.sdk.mission.MissionControl;
 import dji.sdk.mission.hotpoint.HotpointMissionOperator;
+import dji.sdk.mission.intelligenthotpoint.IntelligentHotpointMissionOperator;
 import dji.sdk.mission.waypoint.WaypointMissionOperator;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private Compass compass;
     private WaypointMissionOperator waypointMissionOperator;
     private WaypointMission mission;
-    private HotpointMission hotpointMission;
+    private IntelligentHotpointMission intelligentHotpointMission;
     private static final String TAG = MainActivity.class.getName();
     private LiveStreamManager.OnLiveChangeListener listener;
     private VideoFeeder.VideoDataListener videoDataListener;
@@ -95,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap[] bitmaps;
     private Bitmap bitmap;
     private int count;
+    private double height;
+    DJIError djiErrort;
 
 
     //xiaoweigeCode
@@ -115,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     double car_Updata;
     int loadready = 0;
     private FlightController flightController;
-    private HotpointMissionOperator hotpointMissionOperator;
+    private IntelligentHotpointMissionOperator intelligentHotpointMissionOperator;
 
     Boolean temp;
     byte[] bytes;
@@ -150,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         Button cca = (Button) findViewById(R.id.c_calibration);
         Button setting = (Button) findViewById(R.id.setting);
         SlideButton RTMPButton = findViewById(R.id.RTMPButton);
+
 
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.dialog_soft_input);
                 View view2 = View.inflate(MainActivity.this, R.layout.input, null);
                 final EditText lon = (EditText) view2.findViewById(R.id.username);
                 final EditText lat = (EditText) view2.findViewById(R.id.password);
@@ -254,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                 lon.setText(Double.toString(hotLongitude));
                 lat.setText(Double.toString(hotLatitude));
                 alt.setText(Double.toString(hotAltitude));
-                builder.setTitle("Input").setIcon(R.drawable.ic_access_locker_info).setView(view2).setNegativeButton("取消", null);
+                builder.setView(view2).setNegativeButton("取消", null);
                 builder.setCancelable(true);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -276,78 +285,109 @@ public class MainActivity extends AppCompatActivity {
                             showToast("输入数据有误");
                         }
 
-                        if (MApplication.isAircraftConnected()) {
-                            if (ModuleVerificationUtil.isFlightControllerAvailable()) {
-                                if (flightController == null)
-                                    flightController =
-                                            ((Aircraft) MApplication.getProductInstance()).getFlightController();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (MApplication.isAircraftConnected()) {
+                                    if (ModuleVerificationUtil.isFlightControllerAvailable()) {
+                                        if (flightController == null)
+                                            flightController =
+                                                    ((Aircraft) MApplication.getProductInstance()).getFlightController();
 
-                                //4.missionoperator任务初始化
-                                while (hotpointMissionOperator == null) {
-                                    hotpointMissionOperator = MissionControl.getInstance().getHotpointMissionOperator();
-                                    if (hotpointMissionOperator == null)
-                                        showToast("start init waypointOperator");
-                                }
-
-                                //6. 起飞
-                                if (nowAltitude < 0.1) {
-                                    flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
-                                        @Override
-                                        public void onResult(DJIError djiError) {
-                                            showToast(djiError == null ? "take off!" : djiError.getDescription());
+                                        //4.missionoperator任务初始化
+                                        while (intelligentHotpointMissionOperator == null) {
+                                            intelligentHotpointMissionOperator = MissionControl.getInstance().getIntelligentHotpointMissionOperator();
                                         }
-                                    });
 
-                                    try {
-                                        Thread.sleep(5000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                } else {
-                                    showToast("is already fly");
-                                }
 
-                                //创建hotpoint任务
-                                hotpointMission = new HotpointMission();
-                                hotpointMission.setHotpoint(new LocationCoordinate2D(hotLatitude, hotLongitude));
-                                hotpointMission.setHeading(HotpointHeading.TOWARDS_HOT_POINT);
-                                hotpointMission.setAltitude(15);
-                                hotpointMission.setRadius(5);
-                                hotpointMission.setClockwise(true);
-//
-                                if (hotpointMission != null) {
-                                    if (WaypointMissionState.READY_TO_RETRY_UPLOAD.equals(waypointMissionOperator.getCurrentState())
-                                            || WaypointMissionState.READY_TO_UPLOAD.equals(waypointMissionOperator.getCurrentState())) {
+                                        //6. 起飞
+                                        if (nowAltitude < 0.1) {
+                                            flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
+                                                @Override
+                                                public void onResult(DJIError djiError) {
+                                                    showToast(djiError == null ? "take off!" : djiError.getDescription());
+                                                }
+                                            });
 
-                                        hotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
-                                            @Override
-                                            public void onResult(DJIError djiError) {
-                                                ToastUtils.showToast(djiError == null ? "hotpoint mission success" : djiError.getDescription());
+                                            try {
+                                                Thread.sleep(4000);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
                                             }
-                                        });
+                                        } else {
+                                            showToast("is already fly");
+                                        }
+
+                                        //创建hotpoint任务
+
+                                        if (!intelligentHotpointMissionOperator.isPOIModeSupported())
+                                            showToast("plane not supported");
+                                        if (intelligentHotpointMissionOperator.isPOIModeEnabled() == false) {
+                                            intelligentHotpointMissionOperator.enablePOIMode(new CommonCallbacks.CompletionCallback() {
+                                                @Override
+                                                public void onResult(DJIError djiError) {
+                                                    showToast(djiError == null ? "POI success" : djiError.getDescription());
+                                                }
+                                            });
+                                        }
+
+                                        intelligentHotpointMission = new IntelligentHotpointMission(new LocationCoordinate2D(1.11111, 1.11111));
+                                        intelligentHotpointMission.setHotpoint(new LocationCoordinate2D(1.11111 + 100 * ONE_METER_OFFSET, 1.11111));
+                                        intelligentHotpointMission.setAltitude(20);
+                                        intelligentHotpointMission.setRadius(10);
+                                        intelligentHotpointMission.setAngularVelocity(5);
+                                        DJIError de3 = intelligentHotpointMission.checkParameters();
+
+                                        if (de3 != null) {
+                                            showToast(de3.getDescription());
+                                        }
+
+//                                        hotpointMission.setHotpoint(new LocationCoordinate2D(baseLatitude, baseLongitude));
+//                                        hotpointMission.setStartPoint(HotpointStartPoint.NEAREST);
+//                                        hotpointMission.setHeading(HotpointHeading.TOWARDS_HOT_POINT);
+//                                        hotpointMission.setAltitude(15);
+//                                        hotpointMission.setRadius(6);
+//                                        hotpointMission.setClockwise(true);
+                                        try {
+                                            Thread.sleep(3000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+//
+                                        if (intelligentHotpointMission != null) {
+                                            if (IntelligentHotpointMissionState.READY_TO_START.equals(intelligentHotpointMissionOperator.getCurrentState())) {
+
+                                                intelligentHotpointMissionOperator.startMission(intelligentHotpointMission, new CommonCallbacks.CompletionCallback() {
+                                                    @Override
+                                                    public void onResult(DJIError djiError) {
+                                                        showToast(djiError == null ? "hotpoint mission success" : "Mission Error: " + djiError.getDescription());
+                                                    }
+                                                });
+                                            } else {
+                                                showToast(intelligentHotpointMissionOperator.getCurrentState().toString());
+                                            }
+                                        } else {
+                                            //showToast("null  mission!");
+                                        }
+                                        //showToast("loadready "+loadready);
+
+                                        try {
+                                            Thread.sleep(3000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
                                     } else {
-                                        showToast("Not ready!");
+                                        showToast("FlightControllerCurrent Error");
                                     }
-
                                 } else {
-                                    //showToast("null  mission!");
+                                    showToast("AircraftConnectedCurrent Error");
                                 }
-                                //showToast("loadready "+loadready);
 
-                                try {
-                                    Thread.sleep(3000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                showToast("FlightControllerCurrent Error");
                             }
-                        } else {
-                            showToast("AircraftConnectedCurrent Error");
-                        }
-
+                        }).start();
                     }
                 });
+                builder.create().show();
             }
         });
 
@@ -367,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
 //                }
 
                 //任务数据初始化
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.dialog_soft_input);
                 View view2 = View.inflate(MainActivity.this, R.layout.input, null);
                 final EditText lon = (EditText) view2.findViewById(R.id.username);
                 final EditText lat = (EditText) view2.findViewById(R.id.password);
@@ -375,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
                 lon.setText(Double.toString(aimLongitude));
                 lat.setText(Double.toString(aimLatitude));
                 alt.setText(Double.toString(aimAltitude));
-                builder.setTitle("Input").setIcon(R.drawable.ic_access_locker_info).setView(view2).setNegativeButton("取消", null);
+                builder.setView(view2).setNegativeButton("取消", null);
                 builder.setCancelable(true);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -422,22 +462,6 @@ public class MainActivity extends AppCompatActivity {
                                             waypointMissionOperator = MissionControl.getInstance().getWaypointMissionOperator();
                                             if (waypointMissionOperator == null)
                                                 showToast("start init waypointOperator");
-                                        }
-
-                                        if (MApplication.isAircraftConnected()) {
-                                            if (ModuleVerificationUtil.isFlightControllerAvailable()) {
-                                                if (flightController != null) {
-                                                    flightController.setStateCallback(new FlightControllerState.Callback() {
-                                                        @Override
-                                                        public void onUpdate(@NonNull FlightControllerState flightControllerState) {
-                                                            nowLatitude = flightControllerState.getAircraftLocation().getLatitude();
-                                                            nowLongitude = flightControllerState.getAircraftLocation().getLongitude();
-                                                            nowAltitude = flightControllerState.getAircraftLocation().getAltitude();
-                                                            flightState = flightControllerState.getFlightMode();
-                                                        }
-                                                    });
-                                                }
-                                            }
                                         }
 
 
@@ -765,6 +789,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!MApplication.isAircraftConnected() || !ModuleVerificationUtil.isFlightControllerAvailable()) {
+
+                }
+                flightController =
+                        ((Aircraft) MApplication.getProductInstance()).getFlightController();
+                flightController.setStateCallback(new FlightControllerState.Callback() {
+                    @Override
+                    public void onUpdate(@NonNull FlightControllerState flightControllerState) {
+                        nowLatitude = flightControllerState.getAircraftLocation().getLatitude();
+                        nowLongitude = flightControllerState.getAircraftLocation().getLongitude();
+                        nowAltitude = flightControllerState.getAircraftLocation().getAltitude();
+                        flightState = flightControllerState.getFlightMode();
+                    }
+                });
+            }
+        }).start();
 
     }
 
