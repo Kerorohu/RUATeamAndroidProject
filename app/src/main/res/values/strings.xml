@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyDjiApp</string>
+    <string name="DJIMission">MyDjiApp</string>
     <string name="action_settings">Settings</string>
     <string name="zb">坐标点%1$d</string>
     <string name="zb_j">坐标%1$d经度</string>
