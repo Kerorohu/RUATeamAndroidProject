@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import dji.common.error.DJIAccessLockerError;
 import dji.common.error.DJIError;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.flightcontroller.FlightMode;
@@ -45,6 +46,7 @@ import dji.common.mission.waypoint.WaypointMissionGotoWaypointMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionState;
 import dji.common.model.LocationCoordinate2D;
+import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
 import dji.keysdk.FlightControllerKey;
 import dji.keysdk.KeyManager;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private int count;
     private double height;
+    private UserAccountManager userAccountManager;
+    private UserAccountState userAccountState;
     DJIError djiErrort;
 
 
@@ -795,6 +799,23 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 while (!MApplication.isAircraftConnected() || !ModuleVerificationUtil.isFlightControllerAvailable()) {
 
+                }
+                userAccountManager = UserAccountManager.getInstance();
+                userAccountState = userAccountManager.getUserAccountState();
+                if (userAccountState.equals(UserAccountState.NOT_LOGGED_IN)) {
+                    userAccountManager.logIntoDJIUserAccount(MainActivity.this, new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
+                        @Override
+                        public void onSuccess(UserAccountState userAccountState) {
+                            showToast("login success!");
+                        }
+
+                        @Override
+                        public void onFailure(DJIError djiError) {
+                            showToast(djiError.getDescription());
+                        }
+                    });
+                } else if (!userAccountState.equals(UserAccountState.AUTHORIZED)) {
+                    showToast("error:" + userAccountState.toString());
                 }
                 flightController =
                         ((Aircraft) MApplication.getProductInstance()).getFlightController();
