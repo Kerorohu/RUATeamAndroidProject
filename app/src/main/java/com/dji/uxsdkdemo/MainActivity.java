@@ -305,22 +305,22 @@ public class MainActivity extends AppCompatActivity {
 
 
                                         //6. 起飞
-                                        if (nowAltitude < 0.1) {
-                                            flightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
-                                                @Override
-                                                public void onResult(DJIError djiError) {
-                                                    showToast(djiError == null ? "take off!" : djiError.getDescription());
-                                                }
-                                            });
-
-                                            try {
-                                                Thread.sleep(4000);
-                                            } catch (InterruptedException e) {
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            showToast("is already fly");
-                                        }
+//                                        if (nowAltitude < 0.1) {
+//                                            flightController.startPrecisionTakeoff(new CommonCallbacks.CompletionCallback() {
+//                                                @Override
+//                                                public void onResult(DJIError djiError) {
+//                                                    showToast(djiError == null ? "take off!" : djiError.getDescription());
+//                                                }
+//                                            });
+//
+//                                            try {
+//                                                Thread.sleep(4000);
+//                                            } catch (InterruptedException e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        } else {
+//                                            showToast("is already fly");
+//                                        }
 
                                         //创建hotpoint任务
 
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
                                         //8.waypoint执行
 //                                waypointMissionOperator.clearMission();
                                         //创建waypoint任务
-                                        mission = createWaypointMission(aimLatitude, aimLongitude, (float) aimAltitude);
+                                        mission = createWaypointMission();
 //                              mission = createRandomWaypointMission(1,1);
 
                                         if (mission != null) {
@@ -760,6 +760,7 @@ public class MainActivity extends AppCompatActivity {
         Waypoint eachWaypoint0 = new Waypoint(baseLatitude, baseLongitude, (float) aimAltitude);
         eachWaypoint0.addAction(new WaypointAction(WaypointActionType.STAY, 1));
         waypointList.add(eachWaypoint0);
+        showToast(String.valueOf(baseLatitude));
 
         final double v = (Math.floor(1 / 4) + 1) * 2 * ONE_METER_OFFSET * Math.pow(-1, 1) * Math.pow(0, 1 % 2);
 //        Waypoint eachWaypoint1 = new Waypoint(baseLatitude+30*ONE_METER_OFFSET,

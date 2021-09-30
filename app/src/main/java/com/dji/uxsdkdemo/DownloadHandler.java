@@ -34,7 +34,7 @@ public class DownloadHandler<B> implements DownloadListener<B> {
 
     @Override
     public void onFailure(DJIError djiError) {
-
+        ToastUtils.setResultToToast(djiError.getDescription());
     }
 
     @Override
